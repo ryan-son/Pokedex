@@ -1,76 +1,237 @@
 import ProjectDescription
 
-/// Project helpers are functions that simplify the way you define your project.
-/// Share code to create targets, settings, dependencies,
-/// Create your own conventions, e.g: a func that makes sure all shared targets are "static frameworks"
-/// See https://docs.tuist.io/guides/helpers/
+// MARK: - Versions
+public let appVersion: InfoPlist.Value = "0.1.0"
+public let buildNumber: InfoPlist.Value = "1"
+public let deploymentTarget: DeploymentTarget = .iOS(targetVersion: "13.0", devices: .iphone)
 
+// MARK: - Helpers
 extension Project {
-    /// Helper function to create the Project for this ExampleApp
-    public static func app(name: String, platform: Platform, additionalTargets: [String]) -> Project {
-        var targets = makeAppTargets(name: name,
-                                     platform: platform,
-                                     dependencies: additionalTargets.map { TargetDependency.target(name: $0) })
-        targets += additionalTargets.flatMap({ makeFrameworkTargets(name: $0, platform: platform) })
-        return Project(name: name,
-                       organizationName: "tuist.io",
-                       targets: targets)
+
+  static let bundleIdPrefix: String = "com.ryan-son"
+
+  public static func app(
+    name: String,
+    dependencies: [TargetDependency],
+    packages: [Package] = [],
+    additionalFiles: [FileElement] = []
+  ) -> Project {
+    let mainTarget = Target(
+      name: name,
+      platform: .iOS,
+      product: .app,
+      bundleId: "\(bundleIdPrefix).\(name)",
+      deploymentTarget: deploymentTarget,
+      infoPlist: .app(version: appVersion, buildNumber: buildNumber),
+      sources: ["Sources/**"],
+      resources: ["Resources/**"],
+      entitlements: nil,
+      scripts: [.appSwiftLint],
+      dependencies: dependencies,
+      settings: nil,
+      coreDataModels: [],
+      launchArguments: [],
+      additionalFiles: []
+    )
+    return Project(
+      name: name,
+      packages: packages,
+      targets: [mainTarget],
+      additionalFiles: additionalFiles
+    )
+  }
+
+  public static func framework(
+    name: String,
+    targetTypes: [DynamicFrameworkTargetType] = [],
+    dependencies: [TargetDependency] = [],
+    packages: [Package] = [],
+    additionalFiles: [FileElement] = []
+  ) -> Project {
+    var projectTargets: [Target] = []
+    let mainTarget = Target(
+      name: name,
+      platform: .iOS,
+      product: .framework,
+      bundleId: "\(bundleIdPrefix).\(name)",
+      deploymentTarget: deploymentTarget,
+      infoPlist: .default,
+      sources: ["Sources/**"],
+      scripts: [.moduleSwiftLint],
+      dependencies: dependencies,
+      additionalFiles: additionalFiles
+    )
+    projectTargets.append(mainTarget)
+
+    if targetTypes.contains(.unitTest) {
+      let unitTestTarget = Target(
+        name: "\(name)Tests",
+        platform: .iOS,
+        product: .unitTests,
+        bundleId: "\(bundleIdPrefix).\(name)Tests",
+        deploymentTarget: deploymentTarget,
+        infoPlist: .default,
+        sources: ["Tests/Sources/**", "Tests/Resources/**"],
+        dependencies: [
+          .target(name: name),
+          .xctest
+        ]
+      )
+      projectTargets.append(unitTestTarget)
     }
 
-    // MARK: - Private
-
-    /// Helper function to create a framework target and an associated unit test target
-    private static func makeFrameworkTargets(name: String, platform: Platform) -> [Target] {
-        let sources = Target(name: name,
-                platform: platform,
-                product: .framework,
-                bundleId: "io.tuist.\(name)",
-                infoPlist: .default,
-                sources: ["Targets/\(name)/Sources/**"],
-                resources: [],
-                dependencies: [])
-        let tests = Target(name: "\(name)Tests",
-                platform: platform,
-                product: .unitTests,
-                bundleId: "io.tuist.\(name)Tests",
-                infoPlist: .default,
-                sources: ["Targets/\(name)/Tests/**"],
-                resources: [],
-                dependencies: [.target(name: name)])
-        return [sources, tests]
+    if targetTypes.contains(.preview) {
+      let previewAppTarget = Target(
+        name: "\(name)PreviewApp",
+        platform: .iOS,
+        product: .app,
+        bundleId: "\(bundleIdPrefix).\(name)PreviewApp",
+        deploymentTarget: deploymentTarget,
+        infoPlist: .app(version: appVersion, buildNumber: buildNumber),
+        sources: ["Preview/Sources/**"],
+        resources: ["Preview/Resources/**"],
+        scripts: [.moduleSwiftLint],
+        dependencies: [
+          .target(name: name),
+        ]
+      )
+      projectTargets.append(previewAppTarget)
     }
+    return Project(
+      name: name,
+      options: .options(disableSynthesizedResourceAccessors: true),
+      packages: packages,
+      targets: projectTargets
+    )
+  }
 
-    /// Helper function to create the application target and the unit test target.
-    private static func makeAppTargets(name: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
-        let platform: Platform = platform
-        let infoPlist: [String: InfoPlist.Value] = [
-            "CFBundleShortVersionString": "1.0",
-            "CFBundleVersion": "1",
-            "UIMainStoryboardFile": "",
-            "UILaunchStoryboardName": "LaunchScreen"
-            ]
+  public static func designSystemFramework(
+    name: String,
+    dependencies: [TargetDependency] = [],
+    packages: [Package] = [],
+    additionalFiles: [FileElement] = []
+  ) -> Project {
+    let mainTarget = Target(
+      name: name,
+      platform: .iOS,
+      product: .framework,
+      bundleId: "\(bundleIdPrefix).\(name)",
+      deploymentTarget: deploymentTarget,
+      sources: ["Sources/**"],
+      resources: ["Resources/**"],
+      scripts: [.moduleSwiftLint, .swiftGen],
+      dependencies: dependencies,
+      additionalFiles: additionalFiles
+    )
+    return Project(
+      name: name,
+      options: .options(disableSynthesizedResourceAccessors: true),
+      packages: packages,
+      targets: [mainTarget]
+    )
+  }
 
-        let mainTarget = Target(
-            name: name,
-            platform: platform,
-            product: .app,
-            bundleId: "io.tuist.\(name)",
-            infoPlist: .extendingDefault(with: infoPlist),
-            sources: ["Targets/\(name)/Sources/**"],
-            resources: ["Targets/\(name)/Resources/**"],
-            dependencies: dependencies
-        )
+  public static func staticLibrary(
+    name: String,
+    targetTypes: [StaticLibraryTargetType] = [],
+    dependencies: [TargetDependency] = [],
+    packages: [Package] = []
+  ) -> Project {
+    var projectTargets: [Target] = []
+    let mainTarget = Target(
+      name: name,
+      platform: .iOS,
+      product: .staticLibrary,
+      bundleId: "\(bundleIdPrefix).\(name)",
+      deploymentTarget: deploymentTarget,
+      infoPlist: .default,
+      sources: ["Sources/**"],
+      scripts: [.moduleSwiftLint],
+      dependencies: dependencies
+    )
+    projectTargets.append(mainTarget)
 
-        let testTarget = Target(
-            name: "\(name)Tests",
-            platform: platform,
-            product: .unitTests,
-            bundleId: "io.tuist.\(name)Tests",
-            infoPlist: .default,
-            sources: ["Targets/\(name)/Tests/**"],
-            dependencies: [
-                .target(name: "\(name)")
-        ])
-        return [mainTarget, testTarget]
+    if targetTypes.contains(.unitTest) {
+      let testTarget = Target(
+        name: "\(name)Tests",
+        platform: .iOS,
+        product: .unitTests,
+        bundleId: "\(bundleIdPrefix).\(name)Tests",
+        deploymentTarget: deploymentTarget,
+        infoPlist: .default,
+        sources: ["Tests/Sources/**", "Tests/Resources/**"],
+        dependencies: [.target(name: name)]
+      )
+      projectTargets.append(testTarget)
     }
+    return Project(
+      name: name,
+      options: .options(disableSynthesizedResourceAccessors: true),
+      packages: packages,
+      targets: projectTargets
+    )
+  }
+}
+
+extension TargetScript {
+  static let appSwiftLint: Self = .pre(script: Script.appSwiftLint, name: "SwiftLint")
+  static let moduleSwiftLint: Self = .pre(script: Script.moduleSwiftLint, name: "SwiftLint")
+  static let swiftGen: Self = .pre(script: Script.swiftGen, name: "SwiftGen")
+}
+
+extension InfoPlist {
+
+  static func app(
+    version: InfoPlist.Value,
+    buildNumber: InfoPlist.Value
+  ) -> Self {
+    return .extendingDefault(
+      with: [
+        "CFBundleShortVersionString": version,
+        "CFBundleVersion": buildNumber,
+        "UIMainStoryboardFile": "",
+        "UILaunchStoryboardName": "LaunchScreen"
+      ]
+    )
+  }
+}
+
+extension TargetScript.Script {
+
+  static let appSwiftLint = """
+  if test -d "/opt/homebrew/bin/"; then
+    PATH="/opt/homebrew/bin/:${PATH}"
+  fi
+  export PATH
+  if which swiftlint >/dev/null; then
+    swiftlint --fix && swiftlint
+  else
+    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+  fi
+  """
+
+  static let moduleSwiftLint = """
+  if test -d "/opt/homebrew/bin/"; then
+    PATH="/opt/homebrew/bin/:${PATH}"
+  fi
+  export PATH
+  if which swiftlint >/dev/null; then
+    CONFIG_PATH="${SRCROOT}/../PokedexApp/.swiftlint.yml"
+    swiftlint --fix --config "${CONFIG_PATH}" && swiftlint --config "${CONFIG_PATH}"
+  else
+    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+  fi
+  """
+
+  static let swiftGen = """
+  if test -d "/opt/homebrew/bin/"; then
+    PATH="/opt/homebrew/bin/:${PATH}"
+  fi
+  export PATH
+  if which swiftgen >/dev/null; then
+    swiftgen run xcassets "${SRCROOT}/Resources/Colors.xcassets" "${SRCROOT}/Resources/Images.xcassets" -p "${SRCROOT}/Templates/Assets.stencil" -o "${SRCROOT}/Sources/Generated/Assets+Generated.swift"
+  else
+    echo "warning: SwiftGen is not installed."
+  fi
+  """
 }
