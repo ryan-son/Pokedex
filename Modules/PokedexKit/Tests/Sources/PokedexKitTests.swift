@@ -1,8 +1,2 @@
-import Foundation
+@testable import PokedexKit
 import XCTest
-
-final class PokedexKitTests: XCTestCase {
-    func test_example() {
-        XCTAssertEqual("PokedexKit", "PokedexKit")
-    }
-}
