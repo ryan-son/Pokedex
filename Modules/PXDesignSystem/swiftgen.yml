@@ -1,0 +1,14 @@
+
+input_dir: Resources/
+output_dir: Sources/Generated/
+
+xcassets:
+  inputs:
+    - Colors.xcassets
+    - Images.xcassets
+  outputs:
+    - templateName: swift5
+      params:
+        forceProvidesNamespaces: true
+        publicAccess: true
+      output: Assets+Generated.swift

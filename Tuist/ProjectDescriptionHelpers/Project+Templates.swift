@@ -121,7 +121,7 @@ extension Project {
       resources: ["Resources/**"],
       scripts: [.moduleSwiftLint, .swiftGen],
       dependencies: dependencies,
-      additionalFiles: additionalFiles
+      additionalFiles: additionalFiles + ["swiftgen.yml"]
     )
     return Project(
       name: name,
@@ -229,9 +229,9 @@ extension TargetScript.Script {
   fi
   export PATH
   if which swiftgen >/dev/null; then
-    swiftgen run xcassets "${SRCROOT}/Resources/Colors.xcassets" "${SRCROOT}/Resources/Images.xcassets" -p "${SRCROOT}/Templates/Assets.stencil" -o "${SRCROOT}/Sources/Generated/Assets+Generated.swift"
+    swiftgen
   else
-    echo "warning: SwiftGen is not installed."
+    echo "warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen"
   fi
   """
 }

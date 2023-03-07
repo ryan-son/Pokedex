@@ -1,6 +1,6 @@
 import UIKit
 import PokedexKit
-import PokedexUI
+import PXDesignSystem
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

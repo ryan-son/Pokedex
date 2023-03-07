@@ -12,7 +12,7 @@ let workspace = Workspace(
   projects: [
     "Modules/PokedexApp",
     "Modules/PokedexKit",
-    "Modules/PokedexUI",
+    "Modules/PXDesignSystem",
   ],
   additionalFiles: []
 )
