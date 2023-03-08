@@ -10,8 +10,9 @@ let localHelper = LocalHelper(name: "MyPlugin")
 let workspace = Workspace(
   name: "Pokedex",
   projects: [
+    "Modules/CoreLibraries",
+    "Modules/CX",
     "Modules/PokedexApp",
-    "Modules/PokedexKit",
     "Modules/PXDesignSystem",
   ],
   additionalFiles: []

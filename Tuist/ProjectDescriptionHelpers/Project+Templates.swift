@@ -135,7 +135,8 @@ extension Project {
     name: String,
     targetTypes: [StaticLibraryTargetType] = [],
     dependencies: [TargetDependency] = [],
-    packages: [Package] = []
+    packages: [Package] = [],
+    additionalFiles: [FileElement]
   ) -> Project {
     var projectTargets: [Target] = []
     let mainTarget = Target(
@@ -168,7 +169,8 @@ extension Project {
       name: name,
       options: .options(disableSynthesizedResourceAccessors: true),
       packages: packages,
-      targets: projectTargets
+      targets: projectTargets,
+      additionalFiles: additionalFiles
     )
   }
 }

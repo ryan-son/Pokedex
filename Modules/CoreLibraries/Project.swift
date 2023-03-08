@@ -2,11 +2,11 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project: Project = .framework(
-  name: "PokedexKit",
-  targetTypes: [
-    .unitTest
+  name: "CoreLibraries",
+  targetTypes: [],
+  dependencies: [
+    .external(name: "RIBs")
   ],
-  dependencies: [],
   packages: [],
   additionalFiles: []
 )
