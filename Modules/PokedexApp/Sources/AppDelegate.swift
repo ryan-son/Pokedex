@@ -1,6 +1,4 @@
 import UIKit
-import PokedexKit
-import PXDesignSystem
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     viewController.view.backgroundColor = .white
     window?.rootViewController = viewController
     window?.makeKeyAndVisible()
-    PokedexKit.hello()
-    PokedexUI.hello()
 
     return true
   }
