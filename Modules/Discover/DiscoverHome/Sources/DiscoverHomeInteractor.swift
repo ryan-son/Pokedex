@@ -14,7 +14,7 @@ protocol DiscoverHomePresentable: Presentable {
   var listener: DiscoverHomePresentableListener? { get set }
 }
 
-protocol DiscoverHomeListener: AnyObject {}
+public protocol DiscoverHomeListener: AnyObject {}
 
 final class DiscoverHomeInteractor:
   PresentableInteractor<DiscoverHomePresentable>,

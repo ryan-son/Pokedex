@@ -18,13 +18,24 @@ final class RootTabBarController:
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    tabBar.isTranslucent = false
-    tabBar.tintColor = .black
-    tabBar.backgroundColor = .white
+    attribute()
   }
 
   func setViewControllers(_ viewControllers: [ViewControllable]) {
     super.setViewControllers(viewControllers.map(\.uiviewController), animated: false)
+  }
+
+  private func attribute() {
+    tabBar.isTranslucent = false
+    tabBar.tintColor = .label
+    tabBar.backgroundColor = .systemBackground
+    addBorder()
+  }
+
+  private func addBorder() {
+    let topBorder = CALayer()
+    topBorder.backgroundColor = UIColor.black.cgColor
+    topBorder.frame = CGRect(x: 0, y: 0, width: tabBar.frame.size.width, height: 0.3)
+    tabBar.layer.addSublayer(topBorder)
   }
 }

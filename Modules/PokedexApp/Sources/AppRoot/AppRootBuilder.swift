@@ -5,11 +5,12 @@
 //  Created by Geonhee on 2023/03/09.
 //
 
+import DiscoverHome
 import RIBs
 
 protocol AppRootDependency: Dependency {}
 
-final class AppRootComponent: Component<AppRootDependency> {
+final class AppRootComponent: Component<AppRootDependency>, DiscoverHomeDependency {
 
   private let rootViewController: ViewControllable
 
@@ -41,9 +42,12 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
       rootViewController: tabBarViewController
     )
     let interactor = AppRootInteractor(presenter: tabBarViewController)
+
+    let discoverHomeBuilder = DiscoverHomeBuilder(dependency: component)
     let router = AppRootRouter(
       interactor: interactor,
-      viewController: tabBarViewController
+      viewController: tabBarViewController,
+      discoverHomeBuilder: discoverHomeBuilder
     )
 
     return (router, interactor)

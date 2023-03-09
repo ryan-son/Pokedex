@@ -9,7 +9,9 @@ import Foundation
 import RIBs
 import RxSwift
 
-protocol AppRootRouting: Routing {}
+protocol AppRootRouting: Routing {
+  func attachTaps()
+}
 
 protocol AppRootPresentable: Presentable {
   var listener: AppRootPresentableListener? { get set }
@@ -33,6 +35,7 @@ final class AppRootInteractor:
 
   override func didBecomeActive() {
     super.didBecomeActive()
+    router?.attachTaps()
   }
 
   override func willResignActive() {

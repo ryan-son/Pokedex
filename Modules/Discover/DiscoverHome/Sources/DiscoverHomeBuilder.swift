@@ -7,23 +7,23 @@
 
 import RIBs
 
-protocol DiscoverHomeDependency: Dependency {}
+public protocol DiscoverHomeDependency: Dependency {}
 
 final class DiscoverHomeComponent: Component<DiscoverHomeDependency> {}
 
 // MARK: - Builder
 
-protocol DiscoverHomeBuildable: Buildable {
-  func build(withListener listener: DiscoverHomeListener) -> DiscoverHomeRouting
+public protocol DiscoverHomeBuildable: Buildable {
+  func build(withListener listener: DiscoverHomeListener) -> ViewableRouting
 }
 
-final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, DiscoverHomeBuildable {
+public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, DiscoverHomeBuildable {
 
-  override init(dependency: DiscoverHomeDependency) {
+  public override init(dependency: DiscoverHomeDependency) {
     super.init(dependency: dependency)
   }
 
-  func build(withListener listener: DiscoverHomeListener) -> DiscoverHomeRouting {
+  public func build(withListener listener: DiscoverHomeListener) -> ViewableRouting {
     let component = DiscoverHomeComponent(dependency: dependency)
     let viewController = DiscoverHomeViewController()
     let interactor = DiscoverHomeInteractor(presenter: viewController)
