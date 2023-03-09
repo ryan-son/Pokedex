@@ -33,10 +33,23 @@ extension Project {
       launchArguments: [],
       additionalFiles: []
     )
+    let unitTestTarget = Target(
+      name: "\(name)Tests",
+      platform: .iOS,
+      product: .unitTests,
+      bundleId: "\(bundleIdPrefix).\(name)Tests",
+      deploymentTarget: deploymentTarget,
+      infoPlist: .default,
+      sources: ["Tests/Sources/**", "Tests/Resources/**"],
+      dependencies: [
+        .target(name: name),
+        .xctest
+      ]
+    )
     return Project(
       name: name,
       packages: packages,
-      targets: [mainTarget],
+      targets: [mainTarget, unitTestTarget],
       additionalFiles: additionalFiles
     )
   }
