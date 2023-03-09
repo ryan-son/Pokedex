@@ -6,6 +6,7 @@
 //
 
 import RIBs
+import RIBsUtil
 
 public protocol DiscoverHomeDependency: Dependency {}
 

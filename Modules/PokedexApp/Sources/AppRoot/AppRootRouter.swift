@@ -7,6 +7,7 @@
 
 import DiscoverHome
 import RIBs
+import RIBsUtil
 
 protocol AppRootInteractable: Interactable, DiscoverHomeListener {
   var router: AppRootRouting? { get set }
@@ -38,7 +39,7 @@ final class AppRootRouter: LaunchRouter<AppRootInteractable, AppRootViewControll
     attachChild(discoverHomeRouting)
 
     let viewControllers = [
-      discoverHomeRouting.viewControllable
+      NavigationControllerable(root: discoverHomeRouting.viewControllable)
     ]
 
     viewController.setViewControllers(viewControllers)
