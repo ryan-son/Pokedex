@@ -56,60 +56,64 @@ extension Project {
 
   public static func framework(
     name: String,
-    targetTypes: [DynamicFrameworkTargetType] = [],
+    targetConfiguration: [String: [DynamicFrameworkTargetType]],
     dependencies: [TargetDependency] = [],
     packages: [Package] = [],
     additionalFiles: [FileElement] = []
   ) -> Project {
     var projectTargets: [Target] = []
-    let mainTarget = Target(
-      name: name,
-      platform: .iOS,
-      product: .framework,
-      bundleId: "\(bundleIdPrefix).\(name)",
-      deploymentTarget: deploymentTarget,
-      infoPlist: .default,
-      sources: ["Sources/**"],
-      scripts: [.moduleSwiftLint],
-      dependencies: dependencies,
-      additionalFiles: additionalFiles
-    )
-    projectTargets.append(mainTarget)
 
-    if targetTypes.contains(.unitTest) {
-      let unitTestTarget = Target(
-        name: "\(name)Tests",
+    targetConfiguration.forEach { (targetName, targetTypes) in
+      let mainTarget = Target(
+        name: targetName,
         platform: .iOS,
-        product: .unitTests,
-        bundleId: "\(bundleIdPrefix).\(name)Tests",
+        product: .framework,
+        bundleId: "\(bundleIdPrefix).\(targetName)",
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
-        sources: ["Tests/Sources/**", "Tests/Resources/**"],
-        dependencies: [
-          .target(name: name),
-          .xctest
-        ]
+        sources: ["\(targetName)/Sources/**"],
+        scripts: [.moduleSwiftLint],
+        dependencies: dependencies,
+        additionalFiles: additionalFiles
       )
-      projectTargets.append(unitTestTarget)
+      projectTargets.append(mainTarget)
+
+      if targetTypes.contains(.unitTest) {
+        let unitTestTarget = Target(
+          name: "\(targetName)Tests",
+          platform: .iOS,
+          product: .unitTests,
+          bundleId: "\(bundleIdPrefix).\(targetName)Tests",
+          deploymentTarget: deploymentTarget,
+          infoPlist: .default,
+          sources: ["\(targetName)/Tests/Sources/**", "\(targetName)/Tests/Resources/**"],
+          dependencies: [
+            .target(name: targetName),
+            .xctest
+          ]
+        )
+        projectTargets.append(unitTestTarget)
+      }
+
+      if targetTypes.contains(.preview) {
+        let previewAppTarget = Target(
+          name: "\(targetName)PreviewApp",
+          platform: .iOS,
+          product: .app,
+          bundleId: "\(bundleIdPrefix).\(targetName)PreviewApp",
+          deploymentTarget: deploymentTarget,
+          infoPlist: .app(version: appVersion, buildNumber: buildNumber),
+          sources: ["\(targetName)/Preview/Sources/**"],
+          resources: ["\(targetName)/Preview/Resources/**"],
+          scripts: [.moduleSwiftLint],
+          dependencies: [
+            .target(name: targetName),
+          ]
+        )
+        projectTargets.append(previewAppTarget)
+      }
     }
 
-    if targetTypes.contains(.preview) {
-      let previewAppTarget = Target(
-        name: "\(name)PreviewApp",
-        platform: .iOS,
-        product: .app,
-        bundleId: "\(bundleIdPrefix).\(name)PreviewApp",
-        deploymentTarget: deploymentTarget,
-        infoPlist: .app(version: appVersion, buildNumber: buildNumber),
-        sources: ["Preview/Sources/**"],
-        resources: ["Preview/Resources/**"],
-        scripts: [.moduleSwiftLint],
-        dependencies: [
-          .target(name: name),
-        ]
-      )
-      projectTargets.append(previewAppTarget)
-    }
     return Project(
       name: name,
       options: .options(disableSynthesizedResourceAccessors: true),
@@ -146,38 +150,60 @@ extension Project {
 
   public static func staticLibrary(
     name: String,
-    targetTypes: [StaticLibraryTargetType] = [],
+    targetConfiguration: [String: [StaticLibraryTargetType]],
     dependencies: [TargetDependency] = [],
     packages: [Package] = [],
     additionalFiles: [FileElement]
   ) -> Project {
     var projectTargets: [Target] = []
-    let mainTarget = Target(
-      name: name,
-      platform: .iOS,
-      product: .staticLibrary,
-      bundleId: "\(bundleIdPrefix).\(name)",
-      deploymentTarget: deploymentTarget,
-      infoPlist: .default,
-      sources: ["Sources/**"],
-      scripts: [.moduleSwiftLint],
-      dependencies: dependencies
-    )
-    projectTargets.append(mainTarget)
 
-    if targetTypes.contains(.unitTest) {
-      let testTarget = Target(
-        name: "\(name)Tests",
+    targetConfiguration.forEach { (targetName, targetTypes) in
+      let mainTarget = Target(
+        name: targetName,
         platform: .iOS,
-        product: .unitTests,
-        bundleId: "\(bundleIdPrefix).\(name)Tests",
+        product: .staticLibrary,
+        bundleId: "\(bundleIdPrefix).\(targetName)",
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
-        sources: ["Tests/Sources/**", "Tests/Resources/**"],
-        dependencies: [.target(name: name)]
+        sources: ["\(targetName)/Sources/**"],
+        scripts: [.moduleSwiftLint],
+        dependencies: dependencies
       )
-      projectTargets.append(testTarget)
+      projectTargets.append(mainTarget)
+
+      if targetTypes.contains(.unitTest) {
+        let testTarget = Target(
+          name: "\(targetName)Tests",
+          platform: .iOS,
+          product: .unitTests,
+          bundleId: "\(bundleIdPrefix).\(targetName)Tests",
+          deploymentTarget: deploymentTarget,
+          infoPlist: .default,
+          sources: ["\(targetName)/Tests/Sources/**", "\(targetName)/Tests/Resources/**"],
+          dependencies: [.target(name: targetName)]
+        )
+        projectTargets.append(testTarget)
+      }
+
+      if targetTypes.contains(.preview) {
+        let previewAppTarget = Target(
+          name: "\(targetName)PreviewApp",
+          platform: .iOS,
+          product: .app,
+          bundleId: "\(bundleIdPrefix).\(targetName)PreviewApp",
+          deploymentTarget: deploymentTarget,
+          infoPlist: .app(version: appVersion, buildNumber: buildNumber),
+          sources: ["\(targetName)/Preview/Sources/**"],
+          resources: ["\(targetName)/Preview/Resources/**"],
+          scripts: [.moduleSwiftLint],
+          dependencies: [
+            .target(name: targetName),
+          ]
+        )
+        projectTargets.append(previewAppTarget)
+      }
     }
+
     return Project(
       name: name,
       options: .options(disableSynthesizedResourceAccessors: true),

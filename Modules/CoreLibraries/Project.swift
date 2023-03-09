@@ -3,7 +3,9 @@ import ProjectDescriptionHelpers
 
 let project: Project = .framework(
   name: "CoreLibraries",
-  targetTypes: [],
+  targetConfiguration: [
+    "CoreLibraries": []
+  ],
   dependencies: [
     .external(name: "RIBs")
   ],

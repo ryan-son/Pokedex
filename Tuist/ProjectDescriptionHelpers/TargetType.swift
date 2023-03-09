@@ -14,4 +14,5 @@ public enum DynamicFrameworkTargetType {
 
 public enum StaticLibraryTargetType {
   case unitTest
+  case preview
 }

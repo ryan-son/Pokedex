@@ -11,7 +11,7 @@ let workspace = Workspace(
   name: "Pokedex",
   projects: [
     "Modules/CoreLibraries",
-    "Modules/CX",
+    "Modules/Discover",
     "Modules/PokedexApp",
     "Modules/PXDesignSystem",
   ],

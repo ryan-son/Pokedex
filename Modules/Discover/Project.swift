@@ -2,9 +2,9 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project: Project = .staticLibrary(
-  name: "CX",
-  targetTypes: [
-    .unitTest
+  name: "Discover",
+  targetConfiguration: [
+    "DiscoverHome": [.unitTest, .preview]
   ],
   dependencies: [
     .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries"))
