@@ -1,2 +1,3 @@
 disabled_rules:
   - nesting
+  - trailing_comma
