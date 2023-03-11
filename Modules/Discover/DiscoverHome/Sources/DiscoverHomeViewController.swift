@@ -36,7 +36,7 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
   }
 
   private func attribute() {
-    title = "Discover"
+    title = "Pokémons"
     self.view.backgroundColor = .systemGray6
     tabBarItem = UITabBarItem(
       title: "Discover",

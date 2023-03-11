@@ -30,7 +30,10 @@ public extension ViewControllable {
     if let nav = self.uiviewController as? UINavigationController {
       nav.pushViewController(viewControllable.uiviewController, animated: animated)
     } else {
-      self.uiviewController.navigationController?.pushViewController(viewControllable.uiviewController, animated: animated)
+      self.uiviewController.navigationController?.pushViewController(
+        viewControllable.uiviewController,
+        animated: animated
+      )
     }
   }
 
@@ -54,7 +57,10 @@ public extension ViewControllable {
     if let nav = self.uiviewController as? UINavigationController {
       nav.setViewControllers(viewControllerables.map(\.uiviewController), animated: true)
     } else {
-      self.uiviewController.navigationController?.setViewControllers(viewControllerables.map(\.uiviewController), animated: true)
+      self.uiviewController.navigationController?.setViewControllers(
+        viewControllerables.map(\.uiviewController),
+        animated: true
+      )
     }
   }
 

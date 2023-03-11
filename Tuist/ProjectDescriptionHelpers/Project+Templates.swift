@@ -56,58 +56,58 @@ extension Project {
 
   public static func framework(
     name: String,
-    targetConfiguration: [String: [DynamicFrameworkTargetType]],
+    targetConfigurations: [TargetConfiguration],
     dependencies: [TargetDependency] = [],
     packages: [Package] = [],
     additionalFiles: [FileElement] = []
   ) -> Project {
     var projectTargets: [Target] = []
 
-    targetConfiguration.forEach { (targetName, targetTypes) in
+    targetConfigurations.forEach { configuration in
       let mainTarget = Target(
-        name: targetName,
+        name: configuration.name,
         platform: .iOS,
         product: .framework,
-        bundleId: "\(bundleIdPrefix).\(targetName)",
+        bundleId: "\(bundleIdPrefix).\(configuration.name)",
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
-        sources: ["\(targetName)/Sources/**"],
+        sources: ["\(configuration.name)/Sources/**"],
         scripts: [.moduleSwiftLint],
-        dependencies: dependencies,
+        dependencies: dependencies + configuration.dependencies,
         additionalFiles: additionalFiles
       )
       projectTargets.append(mainTarget)
 
-      if targetTypes.contains(.unitTest) {
+      if configuration.targetTypes.contains(.unitTest) {
         let unitTestTarget = Target(
-          name: "\(targetName)Tests",
+          name: "\(configuration.name)Tests",
           platform: .iOS,
           product: .unitTests,
-          bundleId: "\(bundleIdPrefix).\(targetName)Tests",
+          bundleId: "\(bundleIdPrefix).\(configuration.name)Tests",
           deploymentTarget: deploymentTarget,
           infoPlist: .default,
-          sources: ["\(targetName)/Tests/Sources/**", "\(targetName)/Tests/Resources/**"],
+          sources: ["\(configuration.name)/Tests/Sources/**", "\(configuration.name)/Tests/Resources/**"],
           dependencies: [
-            .target(name: targetName),
+            .target(name: configuration.name),
             .xctest
           ]
         )
         projectTargets.append(unitTestTarget)
       }
 
-      if targetTypes.contains(.preview) {
+      if configuration.targetTypes.contains(.preview) {
         let previewAppTarget = Target(
-          name: "\(targetName)PreviewApp",
+          name: "\(configuration.name)PreviewApp",
           platform: .iOS,
           product: .app,
-          bundleId: "\(bundleIdPrefix).\(targetName)PreviewApp",
+          bundleId: "\(bundleIdPrefix).\(configuration.name)PreviewApp",
           deploymentTarget: deploymentTarget,
           infoPlist: .app(version: appVersion, buildNumber: buildNumber),
-          sources: ["\(targetName)/Preview/Sources/**"],
-          resources: ["\(targetName)/Preview/Resources/**"],
+          sources: ["\(configuration.name)/Preview/Sources/**"],
+          resources: ["\(configuration.name)/Preview/Resources/**"],
           scripts: [.moduleSwiftLint],
           dependencies: [
-            .target(name: targetName),
+            .target(name: configuration.name),
           ]
         )
         projectTargets.append(previewAppTarget)
@@ -150,54 +150,54 @@ extension Project {
 
   public static func staticLibrary(
     name: String,
-    targetConfiguration: [String: [StaticLibraryTargetType]],
+    targetConfigurations: [TargetConfiguration],
     dependencies: [TargetDependency] = [],
     packages: [Package] = [],
     additionalFiles: [FileElement]
   ) -> Project {
     var projectTargets: [Target] = []
 
-    targetConfiguration.forEach { (targetName, targetTypes) in
+    targetConfigurations.forEach { configuration in
       let mainTarget = Target(
-        name: targetName,
+        name: configuration.name,
         platform: .iOS,
         product: .staticLibrary,
-        bundleId: "\(bundleIdPrefix).\(targetName)",
+        bundleId: "\(bundleIdPrefix).\(configuration.name)",
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
-        sources: ["\(targetName)/Sources/**"],
+        sources: ["\(configuration.name)/Sources/**"],
         scripts: [.moduleSwiftLint],
-        dependencies: dependencies
+        dependencies: dependencies + configuration.dependencies
       )
       projectTargets.append(mainTarget)
 
-      if targetTypes.contains(.unitTest) {
+      if configuration.targetTypes.contains(.unitTest) {
         let testTarget = Target(
-          name: "\(targetName)Tests",
+          name: "\(configuration.name)Tests",
           platform: .iOS,
           product: .unitTests,
-          bundleId: "\(bundleIdPrefix).\(targetName)Tests",
+          bundleId: "\(bundleIdPrefix).\(configuration.name)Tests",
           deploymentTarget: deploymentTarget,
           infoPlist: .default,
-          sources: ["\(targetName)/Tests/Sources/**", "\(targetName)/Tests/Resources/**"],
-          dependencies: [.target(name: targetName)]
+          sources: ["\(configuration.name)/Tests/Sources/**", "\(configuration.name)/Tests/Resources/**"],
+          dependencies: [.target(name: configuration.name)]
         )
         projectTargets.append(testTarget)
       }
 
-      if targetTypes.contains(.preview) {
+      if configuration.targetTypes.contains(.preview) {
         let previewAppTarget = Target(
-          name: "\(targetName)PreviewApp",
+          name: "\(configuration.name)PreviewApp",
           platform: .iOS,
           product: .app,
-          bundleId: "\(bundleIdPrefix).\(targetName)PreviewApp",
+          bundleId: "\(bundleIdPrefix).\(configuration.name)PreviewApp",
           deploymentTarget: deploymentTarget,
           infoPlist: .app(version: appVersion, buildNumber: buildNumber),
-          sources: ["\(targetName)/Preview/Sources/**"],
-          resources: ["\(targetName)/Preview/Resources/**"],
+          sources: ["\(configuration.name)/Preview/Sources/**"],
+          resources: ["\(configuration.name)/Preview/Resources/**"],
           scripts: [.moduleSwiftLint],
           dependencies: [
-            .target(name: targetName),
+            .target(name: configuration.name),
           ]
         )
         projectTargets.append(previewAppTarget)
