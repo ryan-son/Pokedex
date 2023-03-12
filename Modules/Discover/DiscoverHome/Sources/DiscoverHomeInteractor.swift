@@ -22,7 +22,7 @@ protocol DiscoverHomePresentable: Presentable {
 public protocol DiscoverHomeListener: AnyObject {}
 
 protocol DiscoverHomeInteractorDependency {
-  var pokemons: Observable<[Pokemon]> { get }
+  var pokemonRepository: PokemonRepository { get }
 }
 
 final class DiscoverHomeInteractor:
@@ -47,7 +47,9 @@ final class DiscoverHomeInteractor:
   override func didBecomeActive() {
     super.didBecomeActive()
 
-    dependency.pokemons
+    fetchNextPage()
+
+    dependency.pokemonRepository.pokemons
       .asDriver(onErrorJustReturn: [])
       .drive(onNext: { [weak self] pokemons in
         self?.presenter.updateViews(with: pokemons)
@@ -57,5 +59,9 @@ final class DiscoverHomeInteractor:
 
   override func willResignActive() {
     super.willResignActive()
+  }
+
+  func fetchNextPage() {
+    dependency.pokemonRepository.fetchPokemons(limit: 20)
   }
 }

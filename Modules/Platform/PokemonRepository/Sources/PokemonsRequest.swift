@@ -20,11 +20,15 @@ struct PokemonsRequest: Request {
 
   init(
     baseURL: URL,
-    limit: Int = 20
+    limit: Int,
+    offset: Int
   ) {
     self.endpoint = baseURL.appendingPathComponent("/pokemon/")
     self.method = .get
-    self.query = ["limit": limit]
+    self.query = [
+      "limit": limit,
+      "offset": offset,
+    ]
     self.header = [:]
   }
 }

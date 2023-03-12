@@ -19,7 +19,7 @@ public protocol DiscoverHomeDependency: Dependency {
 }
 
 final class DiscoverHomeComponent: Component<DiscoverHomeDependency>, DiscoverHomeInteractorDependency {
-  private let pokemonRepository: PokemonRepository
+  let pokemonRepository: PokemonRepository
   var pokemons: Observable<[Pokemon]> { pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
 
@@ -49,8 +49,6 @@ public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, Discove
   public func build(
     withListener listener: DiscoverHomeListener
   ) -> ViewableRouting {
-    dependency.pokemonRepository.fetchPokemons()
-
     let component = DiscoverHomeComponent(
       dependency: dependency,
       pokemonRepository: dependency.pokemonRepository

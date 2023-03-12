@@ -12,7 +12,9 @@ import RxSwift
 import SharedModels
 import UIKit
 
-protocol DiscoverHomePresentableListener: AnyObject {}
+protocol DiscoverHomePresentableListener: AnyObject {
+  func fetchNextPage()
+}
 
 final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentable, DiscoverHomeViewControllable {
 
@@ -29,6 +31,7 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
       PokemonCollectionViewCell.self,
       forCellWithReuseIdentifier: "PokemonCollectionViewCell"
     )
+    collectionView.delegate = self
     return collectionView
   }()
   private var pokemonsDataSource: UICollectionViewDiffableDataSource<PokemonSection, Pokemon>?
@@ -125,6 +128,19 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
     snapshot.deleteAllItems()
     snapshot.appendSections([.main])
     snapshot.appendItems(pokemons)
-    pokemonsDataSource?.apply(snapshot, animatingDifferences: false)
+    pokemonsDataSource?.apply(snapshot, animatingDifferences: true)
+  }
+}
+
+extension DiscoverHomeViewController: UICollectionViewDelegate {
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let scrollViewHeight = scrollView.frame.size.height
+    let contentHeight = scrollView.contentSize.height
+    let contentOffsetY = scrollView.contentOffset.y
+
+    if contentOffsetY >= contentHeight - scrollViewHeight - 150 {
+      listener?.fetchNextPage()
+    }
   }
 }

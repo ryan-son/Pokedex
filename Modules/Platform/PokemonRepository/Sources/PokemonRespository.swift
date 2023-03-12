@@ -6,7 +6,7 @@ import SharedModels
 public protocol PokemonRepository {
   var pokemons: Observable<[Pokemon]> { get }
 
-  func fetchPokemons()
+  func fetchPokemons(limit: Int)
 }
 
 public final class PokemonRepositoryImpl: PokemonRepository {
@@ -17,6 +17,8 @@ public final class PokemonRepositoryImpl: PokemonRepository {
 
   private var pokemonsSubject = BehaviorSubject<[Pokemon]>(value: [])
   public var pokemons: Observable<[Pokemon]> { pokemonsSubject.asObservable() }
+  private var currentOffset: Int = 1
+  private var isLoading: Bool = false
 
   public init(
     apiService: APIService,
@@ -27,10 +29,15 @@ public final class PokemonRepositoryImpl: PokemonRepository {
     self.baseURL = baseURL
   }
 
-  public func fetchPokemons() {
+  public func fetchPokemons(limit: Int) {
+    guard isLoading == false else { return }
+
+    isLoading = true
+
     let request = PokemonsRequest(
       baseURL: baseURL,
-      limit: 20
+      limit: limit,
+      offset: currentOffset
     )
     apiService.send(request)
       .map { result in
@@ -44,7 +51,9 @@ public final class PokemonRepositoryImpl: PokemonRepository {
         }
       }
       .subscribe(
-        onSuccess: { [weak self] pokemons in
+        onSuccess: { [weak self] (pokemons: [Pokemon]) in
+          self?.isLoading = false
+          self?.currentOffset += limit
           self?.pokemonsSubject.onNext(pokemons)
         },
         onFailure: { error in
