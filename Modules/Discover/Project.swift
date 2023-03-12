@@ -7,7 +7,9 @@ let project: Project = .staticLibrary(
     TargetConfiguration(
       name: "DiscoverHome",
       targetTypes: [.unitTest, .preview],
-      dependencies: []
+      dependencies: [
+        .target(name: "DiscoverDetail"),
+      ]
     ),
     TargetConfiguration(
       name: "DiscoverDetail",

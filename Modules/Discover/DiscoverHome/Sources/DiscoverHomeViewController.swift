@@ -15,9 +15,13 @@ import UIKit
 
 protocol DiscoverHomePresentableListener: AnyObject {
   func fetchNextPage()
+  func didTapPokemon(at item: Int)
 }
 
-final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentable, DiscoverHomeViewControllable {
+final class DiscoverHomeViewController:
+  UIViewController,
+  DiscoverHomePresentable,
+  DiscoverHomeViewControllable {
 
   enum PokemonSection {
     case main
@@ -132,5 +136,12 @@ extension DiscoverHomeViewController: UICollectionViewDelegate {
     if contentOffsetY >= contentHeight - scrollViewHeight - 150 {
       listener?.fetchNextPage()
     }
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    listener?.didTapPokemon(at: indexPath.item)
   }
 }

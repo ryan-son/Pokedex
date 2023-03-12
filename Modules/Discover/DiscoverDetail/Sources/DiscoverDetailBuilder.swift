@@ -7,29 +7,23 @@
 
 import RIBs
 
-protocol DiscoverDetailDependency: Dependency {
-  // TODO: Declare the set of dependencies required by this RIB, but cannot be
-  // created by this RIB.
-}
+public protocol DiscoverDetailDependency: Dependency {}
 
-final class DiscoverDetailComponent: Component<DiscoverDetailDependency> {
-  
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
+final class DiscoverDetailComponent: Component<DiscoverDetailDependency> {}
 
 // MARK: - Builder
 
-protocol DiscoverDetailBuildable: Buildable {
-  func build(withListener listener: DiscoverDetailListener) -> DiscoverDetailRouting
+public protocol DiscoverDetailBuildable: Buildable {
+  func build(withListener listener: DiscoverDetailListener) -> ViewableRouting
 }
 
-final class DiscoverDetailBuilder: Builder<DiscoverDetailDependency>, DiscoverDetailBuildable {
-  
-  override init(dependency: DiscoverDetailDependency) {
+public final class DiscoverDetailBuilder: Builder<DiscoverDetailDependency>, DiscoverDetailBuildable {
+
+  public override init(dependency: DiscoverDetailDependency) {
     super.init(dependency: dependency)
   }
-  
-  func build(withListener listener: DiscoverDetailListener) -> DiscoverDetailRouting {
+
+  public func build(withListener listener: DiscoverDetailListener) -> ViewableRouting {
     let component = DiscoverDetailComponent(dependency: dependency)
     let viewController = DiscoverDetailViewController()
     let interactor = DiscoverDetailInteractor(presenter: viewController)

@@ -6,6 +6,7 @@
 //
 
 import APIService
+import DiscoverDetail
 import ImageLoader
 import PokemonRepository
 import RIBs
@@ -18,7 +19,10 @@ public protocol DiscoverHomeDependency: Dependency {
   var imageLoader: ImageLoader { get }
 }
 
-final class DiscoverHomeComponent: Component<DiscoverHomeDependency>, DiscoverHomeInteractorDependency {
+final class DiscoverHomeComponent:
+  Component<DiscoverHomeDependency>,
+  DiscoverHomeInteractorDependency,
+  DiscoverDetailDependency {
   let pokemonRepository: PokemonRepository
   var pokemons: Observable<[Pokemon]> { pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
@@ -59,6 +63,13 @@ public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, Discove
       dependency: component
     )
     interactor.listener = listener
-    return DiscoverHomeRouter(interactor: interactor, viewController: viewController)
+
+    let discoverDetailBuilder = DiscoverDetailBuilder(dependency: component)
+
+    return DiscoverHomeRouter(
+      interactor: interactor,
+      viewController: viewController,
+      discoverDetailBuilder: discoverDetailBuilder
+    )
   }
 }

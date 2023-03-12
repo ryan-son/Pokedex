@@ -10,12 +10,41 @@ import RxSwift
 import UIKit
 
 protocol DiscoverDetailPresentableListener: AnyObject {
-  // TODO: Declare properties and methods that the view controller can invoke to perform
-  // business logic, such as signIn(). This protocol is implemented by the corresponding
-  // interactor class.
+  func didTapBackButton()
 }
 
-final class DiscoverDetailViewController: UIViewController, DiscoverDetailPresentable, DiscoverDetailViewControllable {
-  
+final class DiscoverDetailViewController:
+  UIViewController,
+  DiscoverDetailPresentable,
+  DiscoverDetailViewControllable {
+
   weak var listener: DiscoverDetailPresentableListener?
+
+  init() {
+    super.init(nibName: nil, bundle: nil)
+    attribute()
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented.")
+  }
+
+  private func attribute() {
+    self.view.backgroundColor = .systemBackground
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+      image: UIImage(
+        systemName: "chevron.backward",
+        withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
+      ),
+      style: .plain,
+      target: self,
+      action: #selector(didTapBackButton)
+    )
+  }
+
+  @objc
+  private func didTapBackButton() {
+    listener?.didTapBackButton()
+  }
 }
