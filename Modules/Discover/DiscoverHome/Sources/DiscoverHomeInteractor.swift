@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/10.
 //
 
+import PokemonRepository
 import RIBs
 import RxSwift
 
@@ -16,6 +17,10 @@ protocol DiscoverHomePresentable: Presentable {
 
 public protocol DiscoverHomeListener: AnyObject {}
 
+protocol DiscoverHomeInteractorDependency {
+  var pokemons: Observable<[Pokemon]> { get }
+}
+
 final class DiscoverHomeInteractor:
   PresentableInteractor<DiscoverHomePresentable>,
   DiscoverHomeInteractable,
@@ -24,13 +29,25 @@ final class DiscoverHomeInteractor:
   weak var router: DiscoverHomeRouting?
   weak var listener: DiscoverHomeListener?
 
-  override init(presenter: DiscoverHomePresentable) {
+  private let dependency: DiscoverHomeInteractorDependency
+
+  init(
+    presenter: DiscoverHomePresentable,
+    dependency: DiscoverHomeInteractorDependency
+  ) {
+    self.dependency = dependency
     super.init(presenter: presenter)
     presenter.listener = self
   }
 
   override func didBecomeActive() {
     super.didBecomeActive()
+
+    dependency.pokemons
+      .subscribe { pokemons in
+        print(pokemons)
+      }
+      .disposeOnDeactivate(interactor: self)
   }
 
   override func willResignActive() {

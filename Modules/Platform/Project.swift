@@ -13,6 +13,13 @@ let project: Project = .framework(
       ]
     ),
     TargetConfiguration(
+      name: "PokemonRepository",
+      targetTypes: [.unitTest],
+      dependencies: [
+        .target(name: "APIService"),
+      ]
+    ),
+    TargetConfiguration(
       name: "RIBsUtil",
       targetTypes: [.unitTest]
     ),
