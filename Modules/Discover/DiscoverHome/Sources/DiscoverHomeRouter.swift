@@ -7,6 +7,7 @@
 
 import DiscoverDetail
 import RIBs
+import RIBsUtil
 import SharedModels
 
 protocol DiscoverHomeInteractable: Interactable, DiscoverDetailListener {

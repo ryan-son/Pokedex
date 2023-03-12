@@ -9,7 +9,6 @@ let project: Project = .framework(
   dependencies: [
     .external(name: "RIBs"),
     .external(name: "RxCocoa"),
-    .external(name: "RxSwift"),
   ],
   packages: [],
   additionalFiles: []

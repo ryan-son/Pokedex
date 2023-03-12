@@ -1,2 +1,2 @@
-@testable import PokemonRepository
+@testable import APIServiceImpl
 import XCTest

@@ -1,7 +1,6 @@
 import APIService
 import Foundation
 import PXUtilities
-import RIBsUtil
 import RxSwift
 import SharedModels
 

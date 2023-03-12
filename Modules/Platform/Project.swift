@@ -27,20 +27,26 @@ let project: Project = .framework(
     ),
     TargetConfiguration(
       name: "PXUtilities",
-      targetTypes: [.unitTest]
+      targetTypes: [.unitTest],
+      dependencies: [
+        .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
+      ]
     ),
     TargetConfiguration(
       name: "RIBsUtil",
-      targetTypes: [.unitTest]
+      targetTypes: [
+        .unitTest,
+      ],
+      dependencies: [
+        .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
+      ]
     ),
     TargetConfiguration(
       name: "SharedModels",
       targetTypes: [.unitTest]
     ),
   ],
-  dependencies: [
-    .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries"))
-  ],
+  dependencies: [],
   packages: [],
   additionalFiles: []
 )

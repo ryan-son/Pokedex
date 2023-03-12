@@ -65,6 +65,14 @@ final class DiscoverDetailViewController:
       target: self,
       action: #selector(didTapBackButton)
     )
+
+    if let navigationController = self.navigationController {
+      navigationController.interactivePopGestureRecognizer?.delegate = nil
+    }
+    navigationController?.interactivePopGestureRecognizer?.addTarget(
+      self,
+      action: #selector(didTapBackButton)
+    )
   }
 
   private func setupViews() {
