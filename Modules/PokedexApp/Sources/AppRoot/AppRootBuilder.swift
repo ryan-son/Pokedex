@@ -5,14 +5,21 @@
 //  Created by Geonhee on 2023/03/09.
 //
 
+import PokemonRepository
+import ImageLoader
 import DiscoverHome
 import RIBs
 
-protocol AppRootDependency: Dependency {}
+protocol AppRootDependency: Dependency {
+  var pokemonRepository: PokemonRepository { get }
+  var imageLoader: ImageLoader { get }
+}
 
 final class AppRootComponent: Component<AppRootDependency>, DiscoverHomeDependency {
 
   private let rootViewController: ViewControllable
+  var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
+  var imageLoader: ImageLoader { dependency.imageLoader }
 
   init(
     dependency: AppRootDependency,
@@ -47,7 +54,8 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
     let router = AppRootRouter(
       interactor: interactor,
       viewController: tabBarViewController,
-      discoverHomeBuilder: discoverHomeBuilder
+      discoverHomeBuilder: discoverHomeBuilder,
+      imageLoader: component.imageLoader
     )
 
     return (router, interactor)

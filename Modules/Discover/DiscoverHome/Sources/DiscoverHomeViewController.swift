@@ -40,20 +40,20 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
     return label
   }()
 
-  // TODO: DI
-  private let memoryCache = MemoryCache()
-  private lazy var imageLoader = ImageLoaderImpl(session: .shared, cache: self.memoryCache)
+  private let imageLoader: ImageLoader
 
-  init() {
+  init(
+    imageLoader: ImageLoader
+  ) {
+    self.imageLoader = imageLoader
     super.init(nibName: nil, bundle: nil)
     attribute()
     setupViews()
   }
 
+  @available(*, unavailable)
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    attribute()
-    setupViews()
+    fatalError("init(coder:) has not been implemented.")
   }
 
   private func attribute() {

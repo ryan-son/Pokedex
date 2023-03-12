@@ -5,17 +5,22 @@
 //  Created by Geonhee on 2023/03/10.
 //
 
-import APIServiceImpl
+import APIService
+import ImageLoader
 import PokemonRepository
 import RIBs
 import RIBsUtil
 import RxSwift
 
-public protocol DiscoverHomeDependency: Dependency {}
+public protocol DiscoverHomeDependency: Dependency {
+  var pokemonRepository: PokemonRepository { get }
+  var imageLoader: ImageLoader { get }
+}
 
 final class DiscoverHomeComponent: Component<DiscoverHomeDependency>, DiscoverHomeInteractorDependency {
   private let pokemonRepository: PokemonRepository
   var pokemons: Observable<[Pokemon]> { pokemonRepository.pokemons }
+  var imageLoader: ImageLoader { dependency.imageLoader }
 
   init(
     dependency: DiscoverHomeDependency,
@@ -29,7 +34,9 @@ final class DiscoverHomeComponent: Component<DiscoverHomeDependency>, DiscoverHo
 // MARK: - Builder
 
 public protocol DiscoverHomeBuildable: Buildable {
-  func build(withListener listener: DiscoverHomeListener) -> ViewableRouting
+  func build(
+    withListener listener: DiscoverHomeListener
+  ) -> ViewableRouting
 }
 
 public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, DiscoverHomeBuildable {
@@ -38,18 +45,16 @@ public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, Discove
     super.init(dependency: dependency)
   }
 
-  public func build(withListener listener: DiscoverHomeListener) -> ViewableRouting {
-    let pokemonRepository = PokemonRepositoryImpl(
-      apiService: APIServiceImpl(session: .shared),
-      baseURL: BaseURL.pokemon
-    )
-    pokemonRepository.fetchPokemons()
+  public func build(
+    withListener listener: DiscoverHomeListener
+  ) -> ViewableRouting {
+    dependency.pokemonRepository.fetchPokemons()
 
     let component = DiscoverHomeComponent(
       dependency: dependency,
-      pokemonRepository: pokemonRepository
+      pokemonRepository: dependency.pokemonRepository
     )
-    let viewController = DiscoverHomeViewController()
+    let viewController = DiscoverHomeViewController(imageLoader: dependency.imageLoader)
     let interactor = DiscoverHomeInteractor(
       presenter: viewController,
       dependency: component

@@ -6,6 +6,7 @@
 //
 
 import DiscoverHome
+import ImageLoader
 import RIBs
 import RIBsUtil
 
@@ -23,12 +24,16 @@ final class AppRootRouter: LaunchRouter<AppRootInteractable, AppRootViewControll
   private let discoverHomeBuilder: DiscoverHomeBuildable
   private var discoverHomeRouting: ViewableRouting?
 
+  private let imageLoader: ImageLoader
+
   init(
     interactor: AppRootInteractable,
     viewController: AppRootViewControllable,
-    discoverHomeBuilder: DiscoverHomeBuilder
+    discoverHomeBuilder: DiscoverHomeBuilder,
+    imageLoader: ImageLoader
   ) {
     self.discoverHomeBuilder = discoverHomeBuilder
+    self.imageLoader = imageLoader
     super.init(interactor: interactor, viewController: viewController)
     interactor.router = self
   }
