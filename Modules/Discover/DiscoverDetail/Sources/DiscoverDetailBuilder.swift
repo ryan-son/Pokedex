@@ -5,13 +5,17 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import ImageLoader
 import SharedModels
 import RIBs
 
-public protocol DiscoverDetailDependency: Dependency {}
+public protocol DiscoverDetailDependency: Dependency {
+  var imageLoader: ImageLoader { get }
+}
 
-final class DiscoverDetailComponent: Component<DiscoverDetailDependency> {
+final class DiscoverDetailComponent: Component<DiscoverDetailDependency>, DiscoverDetailInteractorDependency {
   fileprivate let selectedPokemon: Pokemon
+  var imageLoader: ImageLoader { dependency.imageLoader }
 
   init(
     dependency: DiscoverDetailDependency,
@@ -42,7 +46,10 @@ public final class DiscoverDetailBuilder: Builder<DiscoverDetailDependency>, Dis
     selectedPokemon: Pokemon
   ) -> ViewableRouting {
     let component = DiscoverDetailComponent(dependency: dependency, selectedPokemon: selectedPokemon)
-    let viewController = DiscoverDetailViewController(pokemon: component.selectedPokemon)
+    let viewController = DiscoverDetailViewController(
+      imageLoader: component.imageLoader,
+      pokemon: component.selectedPokemon
+    )
     let interactor = DiscoverDetailInteractor(presenter: viewController)
     interactor.listener = listener
     return DiscoverDetailRouter(interactor: interactor, viewController: viewController)

@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import ImageLoader
 import RIBs
 import RxSwift
 import SharedModels
@@ -21,14 +22,23 @@ final class DiscoverDetailViewController:
 
   weak var listener: DiscoverDetailPresentableListener?
 
+  private let pokemonImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.contentMode = .scaleAspectFit
+    return imageView
+  }()
+
+  private let imageLoader: ImageLoader
   private let pokemon: Pokemon
 
   init(
+    imageLoader: ImageLoader,
     pokemon: Pokemon
   ) {
+    self.imageLoader = imageLoader
     self.pokemon = pokemon
     super.init(nibName: nil, bundle: nil)
-    attribute()
   }
 
   @available(*, unavailable)
@@ -36,8 +46,15 @@ final class DiscoverDetailViewController:
     fatalError("init(coder:) has not been implemented.")
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    attribute()
+    setupViews()
+    setPokemonImage()
+  }
+
   private func attribute() {
-    self.title = pokemon.name
+    self.title = pokemon.name.capitalized
     self.view.backgroundColor = .systemBackground
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(
       image: UIImage(
@@ -48,6 +65,23 @@ final class DiscoverDetailViewController:
       target: self,
       action: #selector(didTapBackButton)
     )
+  }
+
+  private func setupViews() {
+    self.view.addSubview(pokemonImageView)
+
+    NSLayoutConstraint.activate([
+      pokemonImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+      pokemonImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+      pokemonImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20),
+      pokemonImageView.heightAnchor.constraint(equalToConstant: 350),
+    ])
+  }
+
+  private func setPokemonImage() {
+    Task {
+      pokemonImageView.image = try await imageLoader.load(from: pokemon.imageURL)
+    }
   }
 
   @objc

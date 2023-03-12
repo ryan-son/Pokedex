@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import ImageLoader
 import RIBs
 import RxSwift
 
@@ -18,6 +19,8 @@ public protocol DiscoverDetailListener: AnyObject {
   func discoverDetailDidTapBackButton()
 }
 
+protocol DiscoverDetailInteractorDependency {}
+
 final class DiscoverDetailInteractor:
   PresentableInteractor<DiscoverDetailPresentable>,
   DiscoverDetailInteractable,
@@ -26,7 +29,9 @@ final class DiscoverDetailInteractor:
   weak var router: DiscoverDetailRouting?
   weak var listener: DiscoverDetailListener?
 
-  override init(presenter: DiscoverDetailPresentable) {
+  override init(
+    presenter: DiscoverDetailPresentable
+  ) {
     super.init(presenter: presenter)
     presenter.listener = self
   }

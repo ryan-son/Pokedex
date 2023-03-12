@@ -40,7 +40,9 @@ final class DiscoverHomeRouter:
       withListener: interactor,
       selectedPokemon: selectedPokemon
     )
-    viewController.pushViewController(router.viewControllable, animated: true)
+    let viewControllable = router.viewControllable
+    viewControllable.uiviewController.hidesBottomBarWhenPushed = true
+    viewController.pushViewController(viewControllable, animated: true)
     discoverDetailRouter = router
     attachChild(router)
   }
