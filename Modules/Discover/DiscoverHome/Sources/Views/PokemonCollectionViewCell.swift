@@ -7,6 +7,7 @@
 
 import ImageLoader
 import PXDesignSystem
+import PXUtilities
 import SharedModels
 import UIKit
 
@@ -50,17 +51,17 @@ final class PokemonCollectionViewCell: UICollectionViewCell, Reusable {
       stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
     ])
 
-    contentView.layer.cornerRadius = 20
+    contentView.layer.cornerRadius = 30
     contentView.layer.borderWidth = 1
-    contentView.layer.borderColor = UIColor.gray.cgColor
     contentView.clipsToBounds = true
   }
 
   override func prepareForReuse() {
-      super.prepareForReuse()
+    super.prepareForReuse()
 
-//      imageLoader?.cancel()
-      thumbnailImageView.image = nil
+    //      imageLoader?.cancel()
+    contentView.backgroundColor = nil
+    thumbnailImageView.image = nil
   }
 
   func configure(with pokemon: Pokemon, imageLoader: ImageLoader) {
@@ -68,7 +69,9 @@ final class PokemonCollectionViewCell: UICollectionViewCell, Reusable {
     nameLabel.text = pokemon.name.capitalized
 
     Task {
-      self.thumbnailImageView.image = try await imageLoader.load(from: pokemon.imageURL)
+      let pokemonImage = try await imageLoader.load(from: pokemon.imageURL)
+      self.thumbnailImageView.image = pokemonImage
+      self.contentView.backgroundColor = pokemonImage.averageColor()
     }
   }
 
