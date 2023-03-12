@@ -36,14 +36,6 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
   }()
   private var pokemonsDataSource: UICollectionViewDiffableDataSource<PokemonSection, Pokemon>?
 
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Discover Home"
-    label.textColor = .label
-    return label
-  }()
-
   private let imageLoader: ImageLoader
 
   init(
