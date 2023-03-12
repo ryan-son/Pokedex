@@ -7,6 +7,7 @@
 
 import RIBs
 import RxSwift
+import SharedModels
 import UIKit
 
 protocol DiscoverDetailPresentableListener: AnyObject {
@@ -20,7 +21,12 @@ final class DiscoverDetailViewController:
 
   weak var listener: DiscoverDetailPresentableListener?
 
-  init() {
+  private let pokemon: Pokemon
+
+  init(
+    pokemon: Pokemon
+  ) {
+    self.pokemon = pokemon
     super.init(nibName: nil, bundle: nil)
     attribute()
   }
@@ -31,6 +37,7 @@ final class DiscoverDetailViewController:
   }
 
   private func attribute() {
+    self.title = pokemon.name
     self.view.backgroundColor = .systemBackground
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(
       image: UIImage(

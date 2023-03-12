@@ -6,13 +6,14 @@
 //
 
 import PokemonRepository
+import PXUtilities
 import RIBs
 import RxCocoa
 import RxSwift
 import SharedModels
 
 protocol DiscoverHomeRouting: ViewableRouting {
-  func routeToDiscoverDetail()
+  func routeToDiscoverDetail(selectedPokemon: Pokemon)
   func detachDiscoverDetail()
 }
 
@@ -37,6 +38,10 @@ final class DiscoverHomeInteractor:
   weak var listener: DiscoverHomeListener?
 
   private let dependency: DiscoverHomeInteractorDependency
+
+  private var pokemons: [Pokemon] {
+    return dependency.pokemonRepository.pokemons.value ?? []
+  }
 
   init(
     presenter: DiscoverHomePresentable,
@@ -71,7 +76,7 @@ final class DiscoverHomeInteractor:
   }
 
   func didTapPokemon(at item: Int) {
-    router?.routeToDiscoverDetail()
+    router?.routeToDiscoverDetail(selectedPokemon: pokemons[item])
   }
 
   // MARK: - DiscoverDetailListener

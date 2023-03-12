@@ -7,6 +7,7 @@
 
 import DiscoverDetail
 import RIBs
+import SharedModels
 
 protocol DiscoverHomeInteractable: Interactable, DiscoverDetailListener {
   var router: DiscoverHomeRouting? { get set }
@@ -32,10 +33,13 @@ final class DiscoverHomeRouter:
     interactor.router = self
   }
 
-  func routeToDiscoverDetail() {
+  func routeToDiscoverDetail(selectedPokemon: Pokemon) {
     guard discoverDetailRouter == nil else { return }
 
-    let router = discoverDetailBuilder.build(withListener: interactor)
+    let router = discoverDetailBuilder.build(
+      withListener: interactor,
+      selectedPokemon: selectedPokemon
+    )
     viewController.pushViewController(router.viewControllable, animated: true)
     discoverDetailRouter = router
     attachChild(router)

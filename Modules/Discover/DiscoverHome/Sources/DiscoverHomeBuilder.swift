@@ -9,8 +9,8 @@ import APIService
 import DiscoverDetail
 import ImageLoader
 import PokemonRepository
+import PXUtilities
 import RIBs
-import RIBsUtil
 import RxSwift
 import SharedModels
 
@@ -24,7 +24,7 @@ final class DiscoverHomeComponent:
   DiscoverHomeInteractorDependency,
   DiscoverDetailDependency {
   let pokemonRepository: PokemonRepository
-  var pokemons: Observable<[Pokemon]> { pokemonRepository.pokemons }
+  var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { dependency.pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
 
   init(

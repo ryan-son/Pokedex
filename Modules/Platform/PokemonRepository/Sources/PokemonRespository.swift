@@ -1,10 +1,12 @@
 import APIService
 import Foundation
+import PXUtilities
+import RIBsUtil
 import RxSwift
 import SharedModels
 
 public protocol PokemonRepository {
-  var pokemons: Observable<[Pokemon]> { get }
+  var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { get }
 
   func fetchPokemons(limit: Int)
 }
@@ -16,7 +18,9 @@ public final class PokemonRepositoryImpl: PokemonRepository {
   private var disposeBag: DisposeBag
 
   private var pokemonsSubject = BehaviorSubject<[Pokemon]>(value: [])
-  public var pokemons: Observable<[Pokemon]> { pokemonsSubject.asObservable() }
+  public var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> {
+    return ReadOnlyBehaviorSubject(for: pokemonsSubject)
+  }
   private var currentOffset: Int = 1
   private var isLoading: Bool = false
 
