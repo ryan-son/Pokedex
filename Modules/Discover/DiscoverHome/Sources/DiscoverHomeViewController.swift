@@ -7,6 +7,7 @@
 
 import ImageLoader
 import PokemonRepository
+import PXDesignSystem
 import RIBs
 import RxSwift
 import SharedModels
@@ -27,10 +28,7 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
   private lazy var pokemonsCollectionView: UICollectionView = {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     collectionView.translatesAutoresizingMaskIntoConstraints = false
-    collectionView.register(
-      PokemonCollectionViewCell.self,
-      forCellWithReuseIdentifier: "PokemonCollectionViewCell"
-    )
+    collectionView.register(cellType: PokemonCollectionViewCell.self)
     collectionView.delegate = self
     return collectionView
   }()
@@ -79,10 +77,10 @@ final class DiscoverHomeViewController: UIViewController, DiscoverHomePresentabl
     pokemonsDataSource = UICollectionViewDiffableDataSource<PokemonSection, Pokemon>(
       collectionView: pokemonsCollectionView
     ) { (collectionView, indexPath, pokemon) -> UICollectionViewCell? in
-      guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: "PokemonCollectionViewCell",
+      let cell = collectionView.dequeueReusableCell(
+        cellType: PokemonCollectionViewCell.self,
         for: indexPath
-      ) as? PokemonCollectionViewCell else { fatalError("Could not dequeue cell") }
+      )
       cell.configure(with: pokemon, imageLoader: self.imageLoader)
       return cell
     }

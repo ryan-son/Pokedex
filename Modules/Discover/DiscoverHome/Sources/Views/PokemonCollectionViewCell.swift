@@ -6,10 +6,11 @@
 //
 
 import ImageLoader
+import PXDesignSystem
 import SharedModels
 import UIKit
 
-final class PokemonCollectionViewCell: UICollectionViewCell {
+final class PokemonCollectionViewCell: UICollectionViewCell, Reusable {
 
   let stackView: UIStackView = {
     let stackView = UIStackView()
