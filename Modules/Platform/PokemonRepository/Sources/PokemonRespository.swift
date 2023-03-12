@@ -1,6 +1,7 @@
 import APIService
 import Foundation
 import RxSwift
+import SharedModels
 
 public protocol PokemonRepository {
   var pokemons: Observable<[Pokemon]> { get }

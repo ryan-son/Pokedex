@@ -9,6 +9,7 @@ import PokemonRepository
 import RIBs
 import RxCocoa
 import RxSwift
+import SharedModels
 
 protocol DiscoverHomeRouting: ViewableRouting {}
 

@@ -7,6 +7,7 @@
 
 import APIService
 import Foundation
+import SharedModels
 
 struct PokemonsRequest: Request {
 
@@ -48,21 +49,5 @@ extension PokemonResponseDTO {
       name: name,
       url: Self.imageBaseURL.appendingPathComponent("\(id).png")
     )
-  }
-}
-
-public struct Pokemon: Hashable {
-  public let id: String
-  public let name: String
-  public let imageURL: URL
-
-  public init(
-    id: String,
-    name: String,
-    url: URL
-  ) {
-    self.id = id
-    self.name = name
-    self.imageURL = url
   }
 }

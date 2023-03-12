@@ -11,6 +11,7 @@ import PokemonRepository
 import RIBs
 import RIBsUtil
 import RxSwift
+import SharedModels
 
 public protocol DiscoverHomeDependency: Dependency {
   var pokemonRepository: PokemonRepository { get }

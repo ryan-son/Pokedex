@@ -21,10 +21,15 @@ let project: Project = .framework(
       targetTypes: [.unitTest],
       dependencies: [
         .target(name: "APIService"),
+        .target(name: "SharedModels"),
       ]
     ),
     TargetConfiguration(
       name: "RIBsUtil",
+      targetTypes: [.unitTest]
+    ),
+    TargetConfiguration(
+      name: "SharedModels",
       targetTypes: [.unitTest]
     ),
   ],
