@@ -51,7 +51,7 @@ extension PokemonResponseDTO {
   }
 }
 
-public struct Pokemon {
+public struct Pokemon: Hashable {
   public let id: String
   public let name: String
   public let imageURL: URL

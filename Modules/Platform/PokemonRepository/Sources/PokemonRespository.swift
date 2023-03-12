@@ -14,7 +14,7 @@ public final class PokemonRepositoryImpl: PokemonRepository {
   private let baseURL: URL
   private var disposeBag: DisposeBag
 
-  private var pokemonsSubject = PublishSubject<[Pokemon]>()
+  private var pokemonsSubject = BehaviorSubject<[Pokemon]>(value: [])
   public var pokemons: Observable<[Pokemon]> { pokemonsSubject.asObservable() }
 
   public init(
@@ -35,7 +35,9 @@ public final class PokemonRepositoryImpl: PokemonRepository {
       .map { result in
         switch result {
         case let .success(response):
-          return response.output.results.map { $0.toDomain() }
+          guard var newPokemons = (try? self.pokemonsSubject.value()) else { return [] }
+          newPokemons.append(contentsOf: response.output.results.map { $0.toDomain() })
+          return newPokemons
         case let .failure(error):
           throw error
         }

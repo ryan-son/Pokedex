@@ -13,6 +13,10 @@ let project: Project = .framework(
       ]
     ),
     TargetConfiguration(
+      name: "ImageLoader",
+      targetTypes: [.unitTest]
+    ),
+    TargetConfiguration(
       name: "PokemonRepository",
       targetTypes: [.unitTest],
       dependencies: [

@@ -12,6 +12,7 @@ let project: Project = .staticLibrary(
   ],
   dependencies: [
     .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
+    .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
     .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
     .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform"))
   ],

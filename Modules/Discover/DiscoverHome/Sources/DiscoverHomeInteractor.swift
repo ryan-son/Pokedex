@@ -7,12 +7,15 @@
 
 import PokemonRepository
 import RIBs
+import RxCocoa
 import RxSwift
 
 protocol DiscoverHomeRouting: ViewableRouting {}
 
 protocol DiscoverHomePresentable: Presentable {
   var listener: DiscoverHomePresentableListener? { get set }
+
+  func updateViews(with pokemons: [Pokemon])
 }
 
 public protocol DiscoverHomeListener: AnyObject {}
@@ -44,9 +47,10 @@ final class DiscoverHomeInteractor:
     super.didBecomeActive()
 
     dependency.pokemons
-      .subscribe { pokemons in
-        print(pokemons)
-      }
+      .asDriver(onErrorJustReturn: [])
+      .drive(onNext: { [weak self] pokemons in
+        self?.presenter.updateViews(with: pokemons)
+      })
       .disposeOnDeactivate(interactor: self)
   }
 
