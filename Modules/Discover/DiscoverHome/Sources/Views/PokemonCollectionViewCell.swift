@@ -30,6 +30,7 @@ final class PokemonCollectionViewCell: UICollectionViewCell, Reusable {
   }()
   let nameLabel: UILabel = {
     let label = UILabel()
+    label.font = .preferredFont(forTextStyle: .headline)
     label.textAlignment = .center
     return label
   }()
@@ -45,10 +46,10 @@ final class PokemonCollectionViewCell: UICollectionViewCell, Reusable {
     stackView.addArrangedSubview(nameLabel)
 
     NSLayoutConstraint.activate([
-      stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-      stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+      stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+      stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+      stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+      stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
     ])
 
     contentView.layer.cornerRadius = 30

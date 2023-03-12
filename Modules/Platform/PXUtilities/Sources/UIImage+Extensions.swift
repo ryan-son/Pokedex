@@ -5,8 +5,8 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
-import UIKit
 import CoreImage
+import UIKit
 
 public extension UIImage {
   func averageColor() -> UIColor? {
@@ -20,8 +20,10 @@ public extension UIImage {
     )
     let filter = CIFilter(
       name: "CIAreaAverage",
-      parameters: [kCIInputImageKey: inputImage,
-      kCIInputExtentKey: extentVector]
+      parameters: [
+        kCIInputImageKey: inputImage,
+        kCIInputExtentKey: extentVector
+      ]
     )
     guard let filter,
           let outputImage = filter.outputImage else { return nil }
@@ -37,10 +39,10 @@ public extension UIImage {
       colorSpace: nil
     )
 
-    let red = CGFloat(bitmap[0]) * 2.5 / 255.0
-    let green = CGFloat(bitmap[1]) * 2.5 / 255.0
-    let blue = CGFloat(bitmap[2]) * 2.5 / 255.0
+    let red = CGFloat(bitmap[0]) * 5 / 255.0
+    let green = CGFloat(bitmap[1]) * 5 / 255.0
+    let blue = CGFloat(bitmap[2]) * 5 / 255.0
 
-    return UIColor(red: red, green: green, blue: blue, alpha: 0.7)
+    return UIColor(red: red, green: green, blue: blue, alpha: 0.5)
   }
 }
