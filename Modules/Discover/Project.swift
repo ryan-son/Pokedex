@@ -9,6 +9,11 @@ let project: Project = .staticLibrary(
       targetTypes: [.unitTest, .preview],
       dependencies: []
     ),
+    TargetConfiguration(
+      name: "DiscoverDetail",
+      targetTypes: [.unitTest, .preview],
+      dependencies: []
+    ),
   ],
   dependencies: [
     .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
