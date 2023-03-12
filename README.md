@@ -3,7 +3,7 @@ Pokedex built with RIBs. Modularized with Tuist.
 
 ## Module Dependency Graph
 
-![image](https://user-images.githubusercontent.com/69730931/224570891-73e5a338-dc7d-4053-83f3-a7d48e1ca5f9.png)
+![image](https://user-images.githubusercontent.com/69730931/224571567-78d9b084-e7b1-4cce-b361-9215633fcbd2.png)
 
 ## Video
 
