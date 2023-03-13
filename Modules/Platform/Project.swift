@@ -17,6 +17,17 @@ let project: Project = .framework(
       targetTypes: [.unitTest]
     ),
     TargetConfiguration(
+      name: "Login",
+      targetTypes: [
+        .unitTest,
+        .preview,
+      ],
+      dependencies: [
+        .target(name: "PXUtilities"),
+        .target(name: "SharedModels"),
+      ]
+    ),
+    TargetConfiguration(
       name: "PokemonRepository",
       targetTypes: [.unitTest],
       dependencies: [
