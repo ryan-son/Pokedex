@@ -17,6 +17,7 @@ import SharedModels
 public protocol DiscoverHomeDependency: Dependency {
   var pokemonRepository: PokemonRepository { get }
   var imageLoader: ImageLoader { get }
+  var user: ReadOnlyBehaviorSubject<User?> { get }
 }
 
 final class DiscoverHomeComponent:
@@ -26,6 +27,7 @@ final class DiscoverHomeComponent:
   let pokemonRepository: PokemonRepository
   var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { dependency.pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
+  var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
 
   init(
     dependency: DiscoverHomeDependency,

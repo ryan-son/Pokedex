@@ -6,8 +6,8 @@
 //
 
 import ImageLoader
-import SharedModels
 import RIBs
+import SharedModels
 
 public protocol DiscoverDetailDependency: Dependency {
   var imageLoader: ImageLoader { get }

@@ -2,24 +2,14 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project: Project = .staticLibrary(
-  name: "Discover",
+  name: "Catch",
   targetConfigurations: [
     TargetConfiguration(
-      name: "DiscoverHome",
+      name: "CatchHome",
       targetTypes: [.unitTest, .preview],
       dependencies: [
-        .target(name: "DiscoverDetail"),
         .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
-      ]
-    ),
-    TargetConfiguration(
-      name: "DiscoverDetail",
-      targetTypes: [.unitTest, .preview],
-      dependencies: [
-        .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
-        .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
-        .project(target: "SharedModels", path: .relativeToRoot("Modules/Platform")),
       ]
     ),
   ],

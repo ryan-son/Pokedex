@@ -10,6 +10,8 @@ import APIServiceImpl
 import ImageLoader
 import PokemonRepository
 import RIBs
+import RxSwift
+import SharedModels
 
 final class AppComponent: Component<EmptyDependency>, AppRootDependency {
 
@@ -22,6 +24,7 @@ final class AppComponent: Component<EmptyDependency>, AppRootDependency {
     session: .shared,
     cache: MemoryCache()
   )
+  let userSubject = BehaviorSubject<User?>(value: nil)
 
   init() {
     super.init(dependency: EmptyComponent())
