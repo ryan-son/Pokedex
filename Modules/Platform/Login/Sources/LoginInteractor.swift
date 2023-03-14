@@ -5,8 +5,10 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import PXUtilities
 import RIBs
 import RxSwift
+import SharedModels
 
 protocol LoginRouting: ViewableRouting {
 }
@@ -15,15 +17,29 @@ protocol LoginPresentable: Presentable {
   var listener: LoginPresentableListener? { get set }
 }
 
-protocol LoginListener: AnyObject {
+public protocol LoginListener: AnyObject {
+  func loginDidTapLoginButton(with user: User)
 }
 
-final class LoginInteractor: PresentableInteractor<LoginPresentable>, LoginInteractable, LoginPresentableListener {
+protocol LoginInteractorDependency {
+  var user: ReadOnlyBehaviorSubject<User?> { get }
+}
+
+final class LoginInteractor:
+  PresentableInteractor<LoginPresentable>,
+  LoginInteractable,
+  LoginPresentableListener {
 
   weak var router: LoginRouting?
   weak var listener: LoginListener?
 
-  override init(presenter: LoginPresentable) {
+  private let dependency: LoginInteractorDependency
+
+  init(
+    presenter: LoginPresentable,
+    dependency: LoginInteractorDependency
+  ) {
+    self.dependency = dependency
     super.init(presenter: presenter)
     presenter.listener = self
   }
@@ -34,5 +50,9 @@ final class LoginInteractor: PresentableInteractor<LoginPresentable>, LoginInter
 
   override func willResignActive() {
     super.willResignActive()
+  }
+
+  func didTapLoginButton(with user: User) {
+    listener?.loginDidTapLoginButton(with: user)
   }
 }

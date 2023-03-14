@@ -55,5 +55,9 @@ final class AppRootInteractor:
     super.willResignActive()
   }
 
+  func loginDidTapLoginButton(with user: User) {
+    dependency.userSubject.onNext(user)
+  }
+
   func handle(_ url: URL) {}
 }

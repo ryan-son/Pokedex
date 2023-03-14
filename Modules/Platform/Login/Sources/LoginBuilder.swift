@@ -5,34 +5,37 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import PXUtilities
 import RIBs
+import SharedModels
 
-protocol LoginDependency: Dependency {
-  // TODO: Declare the set of dependencies required by this RIB, but cannot be
-  // created by this RIB.
+public protocol LoginDependency: Dependency {
+  var user: ReadOnlyBehaviorSubject<User?> { get }
 }
 
-final class LoginComponent: Component<LoginDependency> {
-
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+final class LoginComponent: Component<LoginDependency>, LoginInteractorDependency {
+  var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
 }
 
 // MARK: - Builder
 
-protocol LoginBuildable: Buildable {
-  func build(withListener listener: LoginListener) -> LoginRouting
+public protocol LoginBuildable: Buildable {
+  func build(withListener listener: LoginListener) -> ViewableRouting
 }
 
-final class LoginBuilder: Builder<LoginDependency>, LoginBuildable {
+public final class LoginBuilder: Builder<LoginDependency>, LoginBuildable {
 
-  override init(dependency: LoginDependency) {
+  public override init(dependency: LoginDependency) {
     super.init(dependency: dependency)
   }
 
-  func build(withListener listener: LoginListener) -> LoginRouting {
+  public func build(withListener listener: LoginListener) -> ViewableRouting {
     let component = LoginComponent(dependency: dependency)
     let viewController = LoginViewController()
-    let interactor = LoginInteractor(presenter: viewController)
+    let interactor = LoginInteractor(
+      presenter: viewController,
+      dependency: component
+    )
     interactor.listener = listener
     return LoginRouter(interactor: interactor, viewController: viewController)
   }

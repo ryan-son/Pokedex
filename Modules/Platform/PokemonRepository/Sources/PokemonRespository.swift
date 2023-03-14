@@ -8,6 +8,7 @@ public protocol PokemonRepository {
   var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { get }
 
   func fetchPokemons(limit: Int)
+  func randomPokemon() -> Pokemon?
 }
 
 public final class PokemonRepositoryImpl: PokemonRepository {
@@ -64,5 +65,9 @@ public final class PokemonRepositoryImpl: PokemonRepository {
         }
       )
       .disposed(by: disposeBag)
+  }
+
+  public func randomPokemon() -> Pokemon? {
+    return pokemons.value?.randomElement()
   }
 }
