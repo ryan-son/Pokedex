@@ -5,23 +5,16 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import Login
 import PXUtilities
 import RIBs
 import SharedModels
-
-public protocol LoginDependency: Dependency {
-  var user: ReadOnlyBehaviorSubject<User?> { get }
-}
 
 final class LoginComponent: Component<LoginDependency>, LoginInteractorDependency {
   var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
 }
 
 // MARK: - Builder
-
-public protocol LoginBuildable: Buildable {
-  func build(withListener listener: LoginListener) -> ViewableRouting
-}
 
 public final class LoginBuilder: Builder<LoginDependency>, LoginBuildable {
 

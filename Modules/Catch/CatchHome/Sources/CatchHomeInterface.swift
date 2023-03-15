@@ -6,12 +6,14 @@
 //
 
 import ImageLoader
+import Login
 import PokemonRepository
 import PXUtilities
 import RIBs
 import SharedModels
 
 public protocol CatchHomeDependency: Dependency {
+  var loginBuilder: LoginBuildable { get }
   var pokemonRepository: PokemonRepository { get }
   var imageLoader: ImageLoader { get }
   var user: ReadOnlyBehaviorSubject<User?> { get }

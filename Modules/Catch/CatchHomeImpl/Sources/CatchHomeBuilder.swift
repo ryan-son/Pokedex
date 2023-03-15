@@ -17,6 +17,7 @@ final class CatchHomeComponent:
   Component<CatchHomeDependency>,
   CatchHomeInteractorDependency,
   LoginDependency {
+  var loginBuilder: LoginBuildable { dependency.loginBuilder }
   var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
   var imageLoader: ImageLoader { dependency.imageLoader }
   var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
@@ -39,12 +40,10 @@ public final class CatchHomeBuilder: Builder<CatchHomeDependency>, CatchHomeBuil
     )
     interactor.listener = listener
 
-    let loginBuilder = LoginBuilder(dependency: component)
-
     return CatchHomeRouter(
       interactor: interactor,
       viewController: viewController,
-      loginBuilder: loginBuilder
+      loginBuilder: component.loginBuilder
     )
   }
 }

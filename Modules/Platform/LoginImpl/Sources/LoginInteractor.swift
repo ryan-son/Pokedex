@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import Login
 import PXUtilities
 import RIBs
 import RxSwift
@@ -15,10 +16,6 @@ protocol LoginRouting: ViewableRouting {
 
 protocol LoginPresentable: Presentable {
   var listener: LoginPresentableListener? { get set }
-}
-
-public protocol LoginListener: AnyObject {
-  func loginDidTapLoginButton(with user: User)
 }
 
 protocol LoginInteractorDependency {

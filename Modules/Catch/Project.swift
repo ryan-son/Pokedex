@@ -10,8 +10,8 @@ let project: Project = .feature(
       productType: .framework,
       dependencies: [
         .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "Login", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
-        .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),
     TargetConfiguration(
@@ -20,7 +20,7 @@ let project: Project = .feature(
       productType: .staticLibrary,
       dependencies: [
         .target(name: "CatchHome"),
-        .project(target: "Login", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),
   ],

@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import Login
 import RIBs
 
 protocol LoginInteractable: Interactable {

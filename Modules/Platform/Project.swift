@@ -24,19 +24,30 @@ let project: Project = .feature(
     TargetConfiguration(
       name: "ImageLoaderImpl",
       targetTypes: [.unitTest],
-      productType: .staticLibrary
+      productType: .staticLibrary,
+      dependencies: [
+        .target(name: "ImageLoader")
+      ]
     ),
     TargetConfiguration(
       name: "Login",
-      targetTypes: [
-        .unitTest,
-        .preview,
-      ],
+      targetTypes: [],
       productType: .framework,
       dependencies: [
         .target(name: "PXUtilities"),
         .target(name: "RIBsUtil"),
         .target(name: "SharedModels"),
+      ]
+    ),
+    TargetConfiguration(
+      name: "LoginImpl",
+      targetTypes: [
+        .unitTest,
+        .preview,
+      ],
+      productType: .staticLibrary,
+      dependencies: [
+        .target(name: "Login"),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),
