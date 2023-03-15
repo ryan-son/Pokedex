@@ -6,6 +6,7 @@
 //
 
 import CatchHome
+import DiscoverDetail
 import PokemonRepository
 import ImageLoader
 import DiscoverHome
@@ -16,6 +17,7 @@ import RxSwift
 import SharedModels
 
 protocol AppRootDependency: Dependency {
+  var discoverDetailBuilder: DiscoverDetailBuildable { get }
   var pokemonRepository: PokemonRepository { get }
   var imageLoader: ImageLoader { get }
   var userSubject: BehaviorSubject<User?> { get }
@@ -26,7 +28,7 @@ final class AppRootComponent:
   AppRootInteractorDependency,
   DiscoverHomeDependency,
   CatchHomeDependency {
-
+  var discoverDetailBuilder: DiscoverDetailBuildable { dependency.discoverDetailBuilder }
   private let rootViewController: ViewControllable
   var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
   var imageLoader: ImageLoader { dependency.imageLoader }

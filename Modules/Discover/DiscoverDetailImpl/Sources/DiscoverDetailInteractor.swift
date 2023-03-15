@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import DiscoverDetail
 import ImageLoader
 import RIBs
 import RxSwift
@@ -13,10 +14,6 @@ protocol DiscoverDetailRouting: ViewableRouting {}
 
 protocol DiscoverDetailPresentable: Presentable {
   var listener: DiscoverDetailPresentableListener? { get set }
-}
-
-public protocol DiscoverDetailListener: AnyObject {
-  func discoverDetailDidTapBackButton()
 }
 
 protocol DiscoverDetailInteractorDependency {}

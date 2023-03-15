@@ -19,6 +19,7 @@ final class DiscoverHomeComponent:
   Component<DiscoverHomeDependency>,
   DiscoverHomeInteractorDependency,
   DiscoverDetailDependency {
+  fileprivate var discoverDetailBuilder: DiscoverDetailBuildable { dependency.discoverDetailBuilder }
   let pokemonRepository: PokemonRepository
   var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { dependency.pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
@@ -55,12 +56,10 @@ public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, Discove
     )
     interactor.listener = listener
 
-    let discoverDetailBuilder = DiscoverDetailBuilder(dependency: component)
-
     return DiscoverHomeRouter(
       interactor: interactor,
       viewController: viewController,
-      discoverDetailBuilder: discoverDetailBuilder
+      discoverDetailBuilder: component.discoverDetailBuilder
     )
   }
 }

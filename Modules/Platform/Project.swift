@@ -51,8 +51,6 @@ let project: Project = .feature(
       dependencies: [
         .target(name: "APIService"),
         .target(name: "PokemonRepository"),
-        .target(name: "PXUtilities"),
-        .target(name: "SharedModels"),
       ]
     ),
     TargetConfiguration(
