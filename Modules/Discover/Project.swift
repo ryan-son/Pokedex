@@ -1,12 +1,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project: Project = .staticLibrary(
+let project: Project = .feature(
   name: "Discover",
   targetConfigurations: [
     TargetConfiguration(
       name: "DiscoverHome",
       targetTypes: [.unitTest, .preview],
+      productType: .staticLibrary,
       dependencies: [
         .target(name: "DiscoverDetail"),
         .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
@@ -16,6 +17,7 @@ let project: Project = .staticLibrary(
     TargetConfiguration(
       name: "DiscoverDetail",
       targetTypes: [.unitTest, .preview],
+      productType: .staticLibrary,
       dependencies: [
         .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
         .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
@@ -23,7 +25,6 @@ let project: Project = .staticLibrary(
       ]
     ),
   ],
-  dependencies: [],
   packages: [],
   additionalFiles: []
 )

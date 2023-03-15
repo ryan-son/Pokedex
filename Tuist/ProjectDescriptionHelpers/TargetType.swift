@@ -15,15 +15,18 @@ public enum TargetType {
 public struct TargetConfiguration {
   public let name: String
   public let targetTypes: [TargetType]
+  public let productType: Product
   public let dependencies: [TargetDependency]
 
   public init(
     name: String,
     targetTypes: [TargetType] = [],
+    productType: Product,
     dependencies: [TargetDependency] = []
   ) {
     self.name = name
     self.targetTypes = targetTypes
+    self.productType = productType
     self.dependencies = dependencies
   }
 }

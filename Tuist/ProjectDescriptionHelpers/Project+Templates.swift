@@ -54,10 +54,9 @@ extension Project {
     )
   }
 
-  public static func framework(
+  public static func feature(
     name: String,
     targetConfigurations: [TargetConfiguration],
-    dependencies: [TargetDependency] = [],
     packages: [Package] = [],
     additionalFiles: [FileElement] = []
   ) -> Project {
@@ -67,13 +66,13 @@ extension Project {
       let mainTarget = Target(
         name: configuration.name,
         platform: .iOS,
-        product: .framework,
+        product: configuration.productType,
         bundleId: "\(bundleIdPrefix).\(configuration.name)",
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
         sources: ["\(configuration.name)/Sources/**"],
         scripts: [.moduleSwiftLint],
-        dependencies: dependencies + configuration.dependencies,
+        dependencies: configuration.dependencies,
         additionalFiles: additionalFiles
       )
       projectTargets.append(mainTarget)
@@ -145,71 +144,6 @@ extension Project {
       options: .options(disableSynthesizedResourceAccessors: true),
       packages: packages,
       targets: [mainTarget]
-    )
-  }
-
-  public static func staticLibrary(
-    name: String,
-    targetConfigurations: [TargetConfiguration],
-    dependencies: [TargetDependency] = [],
-    packages: [Package] = [],
-    additionalFiles: [FileElement]
-  ) -> Project {
-    var projectTargets: [Target] = []
-
-    targetConfigurations.forEach { configuration in
-      let mainTarget = Target(
-        name: configuration.name,
-        platform: .iOS,
-        product: .staticLibrary,
-        bundleId: "\(bundleIdPrefix).\(configuration.name)",
-        deploymentTarget: deploymentTarget,
-        infoPlist: .default,
-        sources: ["\(configuration.name)/Sources/**"],
-        scripts: [.moduleSwiftLint],
-        dependencies: dependencies + configuration.dependencies
-      )
-      projectTargets.append(mainTarget)
-
-      if configuration.targetTypes.contains(.unitTest) {
-        let testTarget = Target(
-          name: "\(configuration.name)Tests",
-          platform: .iOS,
-          product: .unitTests,
-          bundleId: "\(bundleIdPrefix).\(configuration.name)Tests",
-          deploymentTarget: deploymentTarget,
-          infoPlist: .default,
-          sources: ["\(configuration.name)/Tests/Sources/**", "\(configuration.name)/Tests/Resources/**"],
-          dependencies: [.target(name: configuration.name)]
-        )
-        projectTargets.append(testTarget)
-      }
-
-      if configuration.targetTypes.contains(.preview) {
-        let previewAppTarget = Target(
-          name: "\(configuration.name)PreviewApp",
-          platform: .iOS,
-          product: .app,
-          bundleId: "\(bundleIdPrefix).\(configuration.name)PreviewApp",
-          deploymentTarget: deploymentTarget,
-          infoPlist: .app(version: appVersion, buildNumber: buildNumber),
-          sources: ["\(configuration.name)/Preview/Sources/**"],
-          resources: ["\(configuration.name)/Preview/Resources/**"],
-          scripts: [.moduleSwiftLint],
-          dependencies: [
-            .target(name: configuration.name),
-          ]
-        )
-        projectTargets.append(previewAppTarget)
-      }
-    }
-
-    return Project(
-      name: name,
-      options: .options(disableSynthesizedResourceAccessors: true),
-      packages: packages,
-      targets: projectTargets,
-      additionalFiles: additionalFiles
     )
   }
 }

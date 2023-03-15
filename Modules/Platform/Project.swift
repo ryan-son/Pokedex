@@ -1,20 +1,25 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project: Project = .framework(
+let project: Project = .feature(
   name: "Platform",
   targetConfigurations: [
-    TargetConfiguration(name: "APIService"),
+    TargetConfiguration(
+      name: "APIService",
+      productType: .framework
+    ),
     TargetConfiguration(
       name: "APIServiceImpl",
       targetTypes: [.unitTest],
+      productType: .staticLibrary,
       dependencies: [
         .target(name: "APIService"),
       ]
     ),
     TargetConfiguration(
       name: "ImageLoader",
-      targetTypes: [.unitTest]
+      targetTypes: [.unitTest],
+      productType: .framework
     ),
     TargetConfiguration(
       name: "Login",
@@ -22,6 +27,7 @@ let project: Project = .framework(
         .unitTest,
         .preview,
       ],
+      productType: .framework,
       dependencies: [
         .target(name: "PXUtilities"),
         .target(name: "RIBsUtil"),
@@ -32,6 +38,7 @@ let project: Project = .framework(
     TargetConfiguration(
       name: "PokemonRepository",
       targetTypes: [.unitTest],
+      productType: .framework,
       dependencies: [
         .target(name: "APIService"),
         .target(name: "PXUtilities"),
@@ -41,6 +48,7 @@ let project: Project = .framework(
     TargetConfiguration(
       name: "PXUtilities",
       targetTypes: [.unitTest],
+      productType: .framework,
       dependencies: [
         .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
       ]
@@ -50,16 +58,17 @@ let project: Project = .framework(
       targetTypes: [
         .unitTest,
       ],
+      productType: .framework,
       dependencies: [
         .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
       ]
     ),
     TargetConfiguration(
       name: "SharedModels",
-      targetTypes: [.unitTest]
+      targetTypes: [.unitTest],
+      productType: .framework
     ),
   ],
-  dependencies: [],
   packages: [],
   additionalFiles: []
 )
