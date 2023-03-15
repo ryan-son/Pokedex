@@ -37,10 +37,20 @@ let project: Project = .feature(
     ),
     TargetConfiguration(
       name: "PokemonRepository",
-      targetTypes: [.unitTest],
+      targetTypes: [],
       productType: .framework,
       dependencies: [
+        .target(name: "PXUtilities"),
+        .target(name: "SharedModels"),
+      ]
+    ),
+    TargetConfiguration(
+      name: "PokemonRepositoryImpl",
+      targetTypes: [.unitTest],
+      productType: .staticLibrary,
+      dependencies: [
         .target(name: "APIService"),
+        .target(name: "PokemonRepository"),
         .target(name: "PXUtilities"),
         .target(name: "SharedModels"),
       ]

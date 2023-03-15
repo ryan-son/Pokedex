@@ -9,6 +9,7 @@ import APIService
 import APIServiceImpl
 import ImageLoader
 import PokemonRepository
+import PokemonRepositoryImpl
 import RIBs
 import RxSwift
 import SharedModels
