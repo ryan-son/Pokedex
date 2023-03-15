@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/10.
 //
 
+import DiscoverHome
 import DiscoverDetail
 import RIBs
 import RIBsUtil

@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/10.
 //
 
+import DiscoverHome
 import PokemonRepository
 import PXUtilities
 import RIBs
@@ -22,8 +23,6 @@ protocol DiscoverHomePresentable: Presentable {
 
   func updateViews(with pokemons: [Pokemon])
 }
-
-public protocol DiscoverHomeListener: AnyObject {}
 
 protocol DiscoverHomeInteractorDependency {
   var pokemonRepository: PokemonRepository { get }

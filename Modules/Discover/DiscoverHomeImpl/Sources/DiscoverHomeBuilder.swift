@@ -6,6 +6,7 @@
 //
 
 import APIService
+import DiscoverHome
 import DiscoverDetail
 import ImageLoader
 import PokemonRepository
@@ -13,12 +14,6 @@ import PXUtilities
 import RIBs
 import RxSwift
 import SharedModels
-
-public protocol DiscoverHomeDependency: Dependency {
-  var pokemonRepository: PokemonRepository { get }
-  var imageLoader: ImageLoader { get }
-  var user: ReadOnlyBehaviorSubject<User?> { get }
-}
 
 final class DiscoverHomeComponent:
   Component<DiscoverHomeDependency>,
@@ -39,12 +34,6 @@ final class DiscoverHomeComponent:
 }
 
 // MARK: - Builder
-
-public protocol DiscoverHomeBuildable: Buildable {
-  func build(
-    withListener listener: DiscoverHomeListener
-  ) -> ViewableRouting
-}
 
 public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, DiscoverHomeBuildable {
 

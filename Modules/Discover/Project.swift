@@ -6,9 +6,19 @@ let project: Project = .feature(
   targetConfigurations: [
     TargetConfiguration(
       name: "DiscoverHome",
+      targetTypes: [],
+      productType: .framework,
+      dependencies: [
+        .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "PXUtilities", path: .relativeToRoot("Modules/Platform")),
+      ]
+    ),
+    TargetConfiguration(
+      name: "DiscoverHomeImpl",
       targetTypes: [.unitTest, .preview],
       productType: .staticLibrary,
       dependencies: [
+        .target(name: "DiscoverHome"),
         .target(name: "DiscoverDetail"),
         .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),

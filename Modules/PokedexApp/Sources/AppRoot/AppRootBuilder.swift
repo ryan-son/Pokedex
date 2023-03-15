@@ -9,6 +9,7 @@ import CatchHome
 import PokemonRepository
 import ImageLoader
 import DiscoverHome
+import DiscoverHomeImpl
 import PXUtilities
 import RIBs
 import RxSwift
