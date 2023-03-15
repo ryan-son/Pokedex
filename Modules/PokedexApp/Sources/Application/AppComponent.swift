@@ -9,6 +9,8 @@ import APIService
 import APIServiceImpl
 import CatchHome
 import CatchHomeImpl
+import DiscoverHome
+import DiscoverHomeImpl
 import DiscoverDetail
 import DiscoverDetailImpl
 import ImageLoader
@@ -25,12 +27,16 @@ import SharedModels
 final class AppComponent:
   Component<EmptyDependency>,
   AppRootDependency,
-  DiscoverDetailDependency,
   CatchHomeDependency,
+  DiscoverHomeDependency,
+  DiscoverDetailDependency,
   LoginDependency {
 
   lazy var catchHomeBuilder: CatchHomeBuildable = {
     return CatchHomeBuilder(dependency: self)
+  }()
+  lazy var discoverHomeBuilder: DiscoverHomeBuildable = {
+    return DiscoverHomeBuilder(dependency: self)
   }()
   lazy var discoverDetailBuilder: DiscoverDetailBuildable = {
     return DiscoverDetailBuilder(dependency: self)

@@ -8,7 +8,6 @@
 import CatchHome
 import DiscoverDetail
 import DiscoverHome
-import DiscoverHomeImpl
 import ImageLoader
 import Login
 import PokemonRepository
@@ -19,6 +18,7 @@ import SharedModels
 
 protocol AppRootDependency: Dependency {
   var catchHomeBuilder: CatchHomeBuildable { get }
+  var discoverHomeBuilder: DiscoverHomeBuildable { get }
   var discoverDetailBuilder: DiscoverDetailBuildable { get }
   var loginBuilder: LoginBuildable { get }
 
@@ -34,6 +34,7 @@ final class AppRootComponent:
   DiscoverHomeDependency,
   CatchHomeDependency {
   var catchHomeBuilder: CatchHomeBuildable { dependency.catchHomeBuilder }
+  var discoverHomeBuilder: DiscoverHomeBuildable { dependency.discoverHomeBuilder }
   var discoverDetailBuilder: DiscoverDetailBuildable { dependency.discoverDetailBuilder }
   var loginBuilder: LoginBuildable { dependency.loginBuilder }
 
@@ -76,13 +77,11 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
       dependency: component
     )
 
-    let discoverHomeBuilder = DiscoverHomeBuilder(dependency: component)
-
     let router = AppRootRouter(
       interactor: interactor,
       viewController: tabBarViewController,
       imageLoader: component.imageLoader,
-      discoverHomeBuilder: discoverHomeBuilder,
+      discoverHomeBuilder: component.discoverHomeBuilder,
       catchHomeBuilder: component.catchHomeBuilder
     )
 
