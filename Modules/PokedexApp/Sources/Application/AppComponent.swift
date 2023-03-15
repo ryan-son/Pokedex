@@ -7,17 +7,23 @@
 
 import APIService
 import APIServiceImpl
+import CatchHome
+import CatchHomeImpl
 import DiscoverDetail
 import DiscoverDetailImpl
 import ImageLoader
 import PokemonRepository
 import PokemonRepositoryImpl
+import PXUtilities
 import RIBs
 import RxSwift
 import SharedModels
 
-final class AppComponent: Component<EmptyDependency>, AppRootDependency, DiscoverDetailDependency {
+final class AppComponent: Component<EmptyDependency>, AppRootDependency, DiscoverDetailDependency, CatchHomeDependency {
 
+  lazy var catchHomeBuilder: CatchHomeBuildable = {
+    return CatchHomeBuilder(dependency: self)
+  }()
   lazy var discoverDetailBuilder: DiscoverDetailBuildable = {
     return DiscoverDetailBuilder(dependency: self)
   }()
@@ -32,6 +38,7 @@ final class AppComponent: Component<EmptyDependency>, AppRootDependency, Discove
     cache: MemoryCache()
   )
   let userSubject = BehaviorSubject<User?>(value: nil)
+  var user: ReadOnlyBehaviorSubject<User?> { ReadOnlyBehaviorSubject(for: userSubject) }
 
   init() {
     super.init(dependency: EmptyComponent())

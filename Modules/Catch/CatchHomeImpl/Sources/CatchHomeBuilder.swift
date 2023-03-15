@@ -5,18 +5,13 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import CatchHome
 import ImageLoader
 import Login
 import PokemonRepository
 import PXUtilities
 import RIBs
 import SharedModels
-
-public protocol CatchHomeDependency: Dependency {
-  var pokemonRepository: PokemonRepository { get }
-  var imageLoader: ImageLoader { get }
-  var user: ReadOnlyBehaviorSubject<User?> { get }
-}
 
 final class CatchHomeComponent:
   Component<CatchHomeDependency>,
@@ -28,10 +23,6 @@ final class CatchHomeComponent:
 }
 
 // MARK: - Builder
-
-public protocol CatchHomeBuildable: Buildable {
-  func build(withListener listener: CatchHomeListener) -> ViewableRouting
-}
 
 public final class CatchHomeBuilder: Builder<CatchHomeDependency>, CatchHomeBuildable {
 

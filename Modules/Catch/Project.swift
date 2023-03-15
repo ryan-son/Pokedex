@@ -6,13 +6,21 @@ let project: Project = .feature(
   targetConfigurations: [
     TargetConfiguration(
       name: "CatchHome",
+      targetTypes: [],
+      productType: .framework,
+      dependencies: [
+        .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
+      ]
+    ),
+    TargetConfiguration(
+      name: "CatchHomeImpl",
       targetTypes: [.unitTest, .preview],
       productType: .staticLibrary,
       dependencies: [
-        .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
+        .target(name: "CatchHome"),
         .project(target: "Login", path: .relativeToRoot("Modules/Platform")),
-        .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
-        .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),
   ],

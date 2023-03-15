@@ -17,10 +17,12 @@ import RxSwift
 import SharedModels
 
 protocol AppRootDependency: Dependency {
+  var catchHomeBuilder: CatchHomeBuildable { get }
   var discoverDetailBuilder: DiscoverDetailBuildable { get }
   var pokemonRepository: PokemonRepository { get }
   var imageLoader: ImageLoader { get }
   var userSubject: BehaviorSubject<User?> { get }
+  var user: ReadOnlyBehaviorSubject<User?> { get }
 }
 
 final class AppRootComponent:
@@ -28,13 +30,14 @@ final class AppRootComponent:
   AppRootInteractorDependency,
   DiscoverHomeDependency,
   CatchHomeDependency {
+  var catchHomeBuilder: CatchHomeBuildable { dependency.catchHomeBuilder }
   var discoverDetailBuilder: DiscoverDetailBuildable { dependency.discoverDetailBuilder }
   private let rootViewController: ViewControllable
   var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
   var imageLoader: ImageLoader { dependency.imageLoader }
 
   var userSubject: BehaviorSubject<User?> { dependency.userSubject }
-  var user: ReadOnlyBehaviorSubject<User?> { ReadOnlyBehaviorSubject(for: dependency.userSubject) }
+  var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
 
   init(
     dependency: AppRootDependency,
@@ -69,14 +72,13 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
     )
 
     let discoverHomeBuilder = DiscoverHomeBuilder(dependency: component)
-    let catchHomeBuilder = CatchHomeBuilder(dependency: component)
 
     let router = AppRootRouter(
       interactor: interactor,
       viewController: tabBarViewController,
       imageLoader: component.imageLoader,
       discoverHomeBuilder: discoverHomeBuilder,
-      catchHomeBuilder: catchHomeBuilder
+      catchHomeBuilder: component.catchHomeBuilder
     )
 
     return (router, interactor)

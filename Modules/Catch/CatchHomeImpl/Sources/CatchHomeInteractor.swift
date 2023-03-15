@@ -5,6 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
+import CatchHome
 import PokemonRepository
 import PXUtilities
 import RIBs
@@ -22,10 +23,6 @@ protocol CatchHomePresentable: Presentable {
   func layoutLoggedIn()
   func layoutLoggedOut()
   func updatePokemonCardView(with pokemon: Pokemon)
-}
-
-public protocol CatchHomeListener: AnyObject {
-  func loginDidTapLoginButton(with user: User)
 }
 
 protocol CatchHomeInteractorDependency {
