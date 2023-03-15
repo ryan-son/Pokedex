@@ -71,7 +71,7 @@ extension Project {
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
         sources: ["\(configuration.name)/Sources/**"],
-        scripts: [],
+        scripts: [.moduleSwiftLint],
         dependencies: configuration.dependencies,
         additionalFiles: additionalFiles
       )
@@ -106,7 +106,7 @@ extension Project {
           resources: ["\(configuration.name)/Preview/Resources/**"],
           scripts: [],
           dependencies: [
-            .target(name: configuration.name),
+            .target(name: configuration.name)
           ]
         )
         projectTargets.append(previewAppTarget)
@@ -135,7 +135,7 @@ extension Project {
       deploymentTarget: deploymentTarget,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      scripts: [.swiftGen],
+      scripts: [.swiftGen, .moduleSwiftLint],
       dependencies: dependencies,
       additionalFiles: additionalFiles + ["swiftgen.yml"]
     )
@@ -149,8 +149,21 @@ extension Project {
 }
 
 extension TargetScript {
-  static let appSwiftLint: Self = .pre(script: Script.appSwiftLint, name: "SwiftLint")
-  static let swiftGen: Self = .pre(script: Script.swiftGen, name: "SwiftGen")
+  static let appSwiftLint: Self = .pre(
+    script: Script.appSwiftLint,
+    name: "SwiftLint",
+    basedOnDependencyAnalysis: false
+  )
+  static let moduleSwiftLint: Self = .pre(
+    script: Script.moduleSwiftLint,
+    name: "SwiftLint",
+    basedOnDependencyAnalysis: false
+  )
+  static let swiftGen: Self = .pre(
+    script: Script.swiftGen,
+    name: "SwiftGen",
+    basedOnDependencyAnalysis: false
+  )
 }
 
 extension InfoPlist {
@@ -178,7 +191,19 @@ extension TargetScript.Script {
   fi
   export PATH
   if which swiftlint >/dev/null; then
-    swiftlint --fix && swiftlint
+    swiftlint
+  else
+    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+  fi
+  """
+
+  static let moduleSwiftLint = """
+  if test -d "/opt/homebrew/bin/"; then
+    PATH="/opt/homebrew/bin/:${PATH}"
+  fi
+  export PATH
+  if which swiftlint >/dev/null; then
+    swiftlint --config ../PokedexApp/.swiftlint.yml
   else
     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
   fi
