@@ -5,7 +5,7 @@
 //  Created by Geonhee on 2023/03/13.
 //
 
-@testable import Discover
+@testable import DiscoverDetailImpl
 import XCTest
 
 final class DiscoverDetailRouterTests: XCTestCase {

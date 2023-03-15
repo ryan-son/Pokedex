@@ -1,9 +1,9 @@
-@testable import Discover
+@testable import RIBsUtil
 import Foundation
 import XCTest
 
-final class DiscoverTests: XCTestCase {
+final class RIBsUtilTests: XCTestCase {
   func test_example() {
-    XCTAssertEqual("Discover", "Discover")
+    XCTAssertEqual("RIBsUtil", "RIBsUtil")
   }
 }

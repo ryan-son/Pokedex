@@ -135,7 +135,7 @@ extension Project {
       deploymentTarget: deploymentTarget,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      scripts: [.swiftGen, .moduleSwiftLint],
+      scripts: [.moduleSwiftLint],
       dependencies: dependencies,
       additionalFiles: additionalFiles + ["swiftgen.yml"]
     )

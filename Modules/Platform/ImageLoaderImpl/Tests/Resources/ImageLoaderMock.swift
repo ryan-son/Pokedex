@@ -1,4 +1,4 @@
-@testable import APIServiceImpl
+@testable import ImageLoader
 
-final class APIServiceImplMock {
+final class ImageLoaderMock {
 }

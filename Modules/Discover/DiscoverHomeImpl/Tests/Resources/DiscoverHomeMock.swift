@@ -1,9 +1,9 @@
-@testable import Discover
+@testable import DiscoverHomeImpl
 import Foundation
 import XCTest
 
-final class DiscoverTests: XCTestCase {
+final class DiscoverHomeImplTests: XCTestCase {
   func test_example() {
-    XCTAssertEqual("Discover", "Discover")
+    XCTAssertEqual("DiscoverHomeImpl", "DiscoverHomeImpl")
   }
 }
