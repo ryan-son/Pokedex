@@ -20,6 +20,7 @@ let project: Project = .feature(
       productType: .staticLibrary,
       dependencies: [
         .target(name: "CatchHome"),
+        .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),

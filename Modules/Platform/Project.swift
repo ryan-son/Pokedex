@@ -35,7 +35,6 @@ let project: Project = .feature(
       productType: .framework,
       dependencies: [
         .target(name: "PXUtilities"),
-        .target(name: "RIBsUtil"),
         .target(name: "SharedModels"),
       ]
     ),

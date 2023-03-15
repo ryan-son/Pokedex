@@ -5,7 +5,6 @@
 //  Created by Geonhee on 2023/03/10.
 //
 
-import APIService
 import DiscoverHome
 import DiscoverDetail
 import ImageLoader

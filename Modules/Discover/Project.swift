@@ -19,6 +19,7 @@ let project: Project = .feature(
       dependencies: [
         .target(name: "DiscoverHome"),
         .target(name: "DiscoverDetail"),
+        .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
     ),
@@ -37,7 +38,6 @@ let project: Project = .feature(
       productType: .staticLibrary,
       dependencies: [
         .target(name: "DiscoverDetail"),
-        .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
       ]
     ),
   ],
