@@ -18,8 +18,13 @@ let project: Project = .feature(
     ),
     TargetConfiguration(
       name: "ImageLoader",
-      targetTypes: [.unitTest],
+      targetTypes: [],
       productType: .framework
+    ),
+    TargetConfiguration(
+      name: "ImageLoaderImpl",
+      targetTypes: [.unitTest],
+      productType: .staticLibrary
     ),
     TargetConfiguration(
       name: "Login",

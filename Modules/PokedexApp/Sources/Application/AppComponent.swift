@@ -12,6 +12,7 @@ import CatchHomeImpl
 import DiscoverDetail
 import DiscoverDetailImpl
 import ImageLoader
+import ImageLoaderImpl
 import PokemonRepository
 import PokemonRepositoryImpl
 import PXUtilities

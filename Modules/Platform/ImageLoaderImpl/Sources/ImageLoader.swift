@@ -1,9 +1,5 @@
-import UIKit
-
-public protocol ImageCache {
-  func get(forKey: String) -> UIImage?
-  func set(forKey: String, image: UIImage)
-}
+import ImageLoader
+import UIKit.UIImage
 
 public final class MemoryCache: ImageCache {
   private let cache = NSCache<NSString, UIImage>()
@@ -17,10 +13,6 @@ public final class MemoryCache: ImageCache {
   }
 
   public init() {}
-}
-
-public protocol ImageLoader {
-  func load(from url: URL) async throws -> UIImage
 }
 
 public final class ImageLoaderImpl: ImageLoader {
