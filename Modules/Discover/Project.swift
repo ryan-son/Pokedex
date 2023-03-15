@@ -31,6 +31,9 @@ let project: Project = .feature(
         .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
         .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
         .project(target: "SharedModels", path: .relativeToRoot("Modules/Platform")),
+      ],
+      unitTestDependencies: [
+        .project(target: "RIBsTestSupport", path: .relativeToRoot("Modules/Platform")),
       ]
     ),
     TargetConfiguration(

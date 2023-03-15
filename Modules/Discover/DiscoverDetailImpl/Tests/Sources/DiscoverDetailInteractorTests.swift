@@ -10,14 +10,23 @@ import XCTest
 
 final class DiscoverDetailInteractorTests: XCTestCase {
 
-    private var interactor: DiscoverDetailInteractor!
+  private var sut: DiscoverDetailInteractor!
 
-    override func setUp() {
-        super.setUp()
-    }
+  private var presenter: DiscoverDetailPresentableMock!
+  private var listener: DiscoverDetailListenerMock!
 
-    // MARK: - Tests
+  override func setUp() {
+    super.setUp()
 
-    func test_exampleObservable_callsRouterOrListener_exampleProtocol() {
-    }
+    self.presenter = DiscoverDetailPresentableMock()
+    self.listener = DiscoverDetailListenerMock()
+
+    sut = DiscoverDetailInteractor(presenter: presenter)
+    sut.listener = listener
+  }
+
+  // MARK: - Tests
+
+  func test_exampleObservable_callsRouterOrListener_exampleProtocol() {
+  }
 }

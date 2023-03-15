@@ -80,6 +80,16 @@ let project: Project = .feature(
       ]
     ),
     TargetConfiguration(
+      name: "RIBsTestSupport",
+      targetTypes: [
+        .unitTest,
+      ],
+      productType: .framework,
+      dependencies: [
+        .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
+      ]
+    ),
+    TargetConfiguration(
       name: "RIBsUtil",
       targetTypes: [
         .unitTest,
