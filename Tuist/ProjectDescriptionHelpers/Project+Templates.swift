@@ -71,7 +71,7 @@ extension Project {
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
         sources: ["\(configuration.name)/Sources/**"],
-        scripts: [.moduleSwiftLint],
+        scripts: [],
         dependencies: configuration.dependencies,
         additionalFiles: additionalFiles
       )
@@ -104,7 +104,7 @@ extension Project {
           infoPlist: .app(version: appVersion, buildNumber: buildNumber),
           sources: ["\(configuration.name)/Preview/Sources/**"],
           resources: ["\(configuration.name)/Preview/Resources/**"],
-          scripts: [.moduleSwiftLint],
+          scripts: [],
           dependencies: [
             .target(name: configuration.name),
           ]
@@ -135,7 +135,7 @@ extension Project {
       deploymentTarget: deploymentTarget,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      scripts: [.moduleSwiftLint, .swiftGen],
+      scripts: [.swiftGen],
       dependencies: dependencies,
       additionalFiles: additionalFiles + ["swiftgen.yml"]
     )
@@ -150,7 +150,6 @@ extension Project {
 
 extension TargetScript {
   static let appSwiftLint: Self = .pre(script: Script.appSwiftLint, name: "SwiftLint")
-  static let moduleSwiftLint: Self = .pre(script: Script.moduleSwiftLint, name: "SwiftLint")
   static let swiftGen: Self = .pre(script: Script.swiftGen, name: "SwiftGen")
 }
 
@@ -180,19 +179,6 @@ extension TargetScript.Script {
   export PATH
   if which swiftlint >/dev/null; then
     swiftlint --fix && swiftlint
-  else
-    echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-  fi
-  """
-
-  static let moduleSwiftLint = """
-  if test -d "/opt/homebrew/bin/"; then
-    PATH="/opt/homebrew/bin/:${PATH}"
-  fi
-  export PATH
-  if which swiftlint >/dev/null; then
-    CONFIG_PATH="${SRCROOT}/../PokedexApp/.swiftlint.yml"
-    swiftlint --fix --config "${CONFIG_PATH}" && swiftlint --config "${CONFIG_PATH}"
   else
     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
   fi

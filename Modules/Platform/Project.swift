@@ -6,7 +6,10 @@ let project: Project = .feature(
   targetConfigurations: [
     TargetConfiguration(
       name: "APIService",
-      productType: .framework
+      productType: .framework,
+      dependencies: [
+        .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
+      ]
     ),
     TargetConfiguration(
       name: "APIServiceImpl",

@@ -28,6 +28,7 @@ let project: Project = .feature(
       targetTypes: [],
       productType: .framework,
       dependencies: [
+        .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
         .project(target: "ImageLoader", path: .relativeToRoot("Modules/Platform")),
         .project(target: "SharedModels", path: .relativeToRoot("Modules/Platform")),
       ]

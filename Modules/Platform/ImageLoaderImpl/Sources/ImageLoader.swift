@@ -31,7 +31,7 @@ public final class ImageLoaderImpl: ImageLoader {
     if let image = cache.get(forKey: url.absoluteString) {
       return image
     } else {
-      let (data, response) = try await session.data(for: URLRequest(url: url))
+      let (data, _) = try await session.data(for: URLRequest(url: url))
       guard let image = UIImage(data: data) else {
         throw ImageLoadError.invalidData
       }
