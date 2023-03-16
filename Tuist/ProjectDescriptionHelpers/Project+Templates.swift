@@ -26,7 +26,7 @@ extension Project {
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       entitlements: nil,
-      scripts: [.appSwiftLint],
+      scripts: makeLintScript(for: .app),
       dependencies: dependencies,
       settings: nil,
       coreDataModels: [],
@@ -71,7 +71,7 @@ extension Project {
         deploymentTarget: deploymentTarget,
         infoPlist: .default,
         sources: ["\(configuration.name)/Sources/**"],
-        scripts: [.moduleSwiftLint],
+        scripts: makeLintScript(for: configuration.productType),
         dependencies: configuration.dependencies,
         additionalFiles: additionalFiles
       )
@@ -136,7 +136,10 @@ extension Project {
       deploymentTarget: deploymentTarget,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      scripts: [.moduleSwiftLint],
+      scripts: [
+        makeLintScript(for: .framework),
+        makeSwiftGenScript(),
+      ].flatMap { $0 },
       dependencies: dependencies,
       additionalFiles: additionalFiles + ["swiftgen.yml"]
     )
@@ -221,4 +224,24 @@ extension TargetScript.Script {
     echo "warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen"
   fi
   """
+}
+
+private func makeLintScript(for product: Product) -> [TargetScript] {
+  guard !Environment.isCI.getBoolean(default: false) else { return [] }
+
+  switch product {
+  case .app:
+    return [.appSwiftLint]
+
+  case .unitTests, .uiTests:
+    return []
+
+  default:
+    return [.moduleSwiftLint]
+  }
+}
+
+private func makeSwiftGenScript() -> [TargetScript] {
+  guard !Environment.isCI.getBoolean(default: false) else { return [] }
+  return [.swiftGen]
 }
