@@ -1,0 +1,43 @@
+name: CI Pipeline for Push and Pull Request
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: macos-latest
+    env:
+      TUIST_IS_CI: 1
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Cache Tuist dependencies
+        uses: actions/cache@v3
+        id: tuist-cache
+        with:
+          path: |
+            Tuist/Dependencies/SwiftPackageManager
+            Tuist/Dependencies/graph.json
+            ~/.tuist/Cache
+          key: ${{ runner.os }}-tuist-${{ hashFiles('Workspace.swift', 'Tuist/Dependencies/Lockfiles/*') }}
+          restore-keys: |
+            ${{ runner.os }}-tuist-
+          
+      - name: Build PokedexApp
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'build'
+          arguments: 'PokedexApp'
+          
+      - name: Test all modules
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'test'
