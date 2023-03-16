@@ -9,8 +9,4 @@
 import XCTest
 
 final class RoutingMockTests: XCTestCase {
-
-  func testExample() throws {
-
-  }
 }

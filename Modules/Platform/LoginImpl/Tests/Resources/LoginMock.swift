@@ -1,9 +1,9 @@
-@testable import CatchHome
+@testable import LoginImpl
 import Foundation
 import XCTest
 
-final class CatchHomeTests: XCTestCase {
+final class LoginImplTests: XCTestCase {
   func test_example() {
-    XCTAssertEqual("CatchHome", "CatchHome")
+    XCTAssertEqual("LoginImpl", "LoginImpl")
   }
 }

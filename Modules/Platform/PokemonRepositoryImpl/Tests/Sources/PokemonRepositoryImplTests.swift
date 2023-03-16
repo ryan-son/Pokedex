@@ -1,4 +1,2 @@
 @testable import PokemonRepositoryImpl
-
-final class PokemonRepositoryMock {
-}
+import XCTest

@@ -1,2 +1,2 @@
-@testable import ImageLoader
+@testable import ImageLoaderImpl
 import XCTest

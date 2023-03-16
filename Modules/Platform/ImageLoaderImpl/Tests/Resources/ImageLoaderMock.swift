@@ -1,4 +1,4 @@
-@testable import ImageLoader
+@testable import ImageLoaderImpl
 
 final class ImageLoaderMock {
 }
