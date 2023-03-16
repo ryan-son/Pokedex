@@ -84,7 +84,7 @@ let project: Project = .feature(
       targetTypes: [
         .unitTest,
       ],
-      productType: .framework,
+      productType: .staticLibrary,
       dependencies: [
         .project(target: "CoreLibraries", path: .relativeToRoot("Modules/CoreLibraries")),
       ]
