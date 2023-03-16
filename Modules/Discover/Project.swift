@@ -9,6 +9,7 @@ let project: Project = .feature(
       targetTypes: [],
       productType: .framework,
       dependencies: [
+        .target(name: "DiscoverDetail"),
         .project(target: "PokemonRepository", path: .relativeToRoot("Modules/Platform")),
       ]
     ),
@@ -18,7 +19,6 @@ let project: Project = .feature(
       productType: .staticLibrary,
       dependencies: [
         .target(name: "DiscoverHome"),
-        .target(name: "DiscoverDetail"),
         .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
       ]
