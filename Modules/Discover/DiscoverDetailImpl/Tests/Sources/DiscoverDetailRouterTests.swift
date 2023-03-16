@@ -10,14 +10,20 @@ import XCTest
 
 final class DiscoverDetailRouterTests: XCTestCase {
 
-    private var router: DiscoverDetailRouter!
+  private var sut: DiscoverDetailRouter!
 
-    override func setUp() {
-        super.setUp()
-    }
+  private var interactor: DiscoverDetailInteractableMock!
+  private var viewController: DiscoverDetailViewControllableMock!
 
-    // MARK: - Tests
+  override func setUp() {
+    super.setUp()
 
-    func test_routeToExample_invokesToExampleResult() {
-    }
+    self.interactor = DiscoverDetailInteractableMock()
+    self.viewController = DiscoverDetailViewControllableMock()
+
+    sut = DiscoverDetailRouter(
+      interactor: interactor,
+      viewController: viewController
+    )
+  }
 }

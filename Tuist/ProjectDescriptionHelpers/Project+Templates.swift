@@ -87,9 +87,10 @@ extension Project {
           infoPlist: .default,
           sources: ["\(configuration.name)/Tests/Sources/**", "\(configuration.name)/Tests/Resources/**"],
           dependencies: [
-            .target(name: configuration.name),
-            .xctest
-          ]
+            [.target(name: configuration.name)],
+            [.xctest],
+            configuration.unitTestDependencies
+          ].flatMap { $0 }
         )
         projectTargets.append(unitTestTarget)
       }
