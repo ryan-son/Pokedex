@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - main
+
+env:
+  APP_SCHEME: "PokedexApp"
   
 jobs:
   build-and-test:
     name: Build and Test
     runs-on: macos-latest
-    env:
-      TUIST_IS_CI: 1
     
     steps:
       - name: Checkout repository
@@ -27,19 +28,22 @@ jobs:
           key: ${{ runner.os }}-tuist-${{ hashFiles('Workspace.swift', 'Tuist/Dependencies/Lockfiles/*') }}
           restore-keys: |
             ${{ runner.os }}-tuist-
+            
+      - name: Install Tuist if not present
+        run: |
+          if ! command -v tuist > /dev/null 2>&1; then
+            curl -Ls https://install.tuist.io | bash
+          fi
       
       - name: Fetch Tuist dependencies
-        uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'fetch'
+        run: tuist fetch
           
       - name: Build PokedexApp
-        uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'build'
-          arguments: 'PokedexApp'
+        run: tuist build "${{ env.APP_SCHEME }}"
+        env:
+          TUIST_IS_CI: 1
           
       - name: Test all modules
-        uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'test'
+        run: tuist test
+        env:
+          TUIST_IS_CI: 1
