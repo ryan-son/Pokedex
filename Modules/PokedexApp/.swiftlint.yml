@@ -2,3 +2,5 @@ disabled_rules:
   - nesting
   - trailing_comma
   - type_name
+
+force_case: warning # for unit test

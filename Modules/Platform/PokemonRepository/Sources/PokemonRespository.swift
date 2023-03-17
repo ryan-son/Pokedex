@@ -7,5 +7,5 @@ public protocol PokemonRepository {
   var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { get }
 
   func fetchPokemons(limit: Int)
-  func randomPokemon() -> Pokemon?
+  func randomPokemon(selectRandom: @escaping (([Pokemon]) -> Pokemon?)) -> Pokemon?
 }

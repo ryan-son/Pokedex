@@ -72,6 +72,14 @@ let project: Project = .feature(
       ]
     ),
     TargetConfiguration(
+      name: "PokemonRepositoryTestSupport",
+      targetTypes: [.unitTest],
+      productType: .staticLibrary,
+      dependencies: [
+        .target(name: "PokemonRepository"),
+      ]
+    ),
+    TargetConfiguration(
       name: "PXUtilities",
       targetTypes: [.unitTest],
       productType: .framework,

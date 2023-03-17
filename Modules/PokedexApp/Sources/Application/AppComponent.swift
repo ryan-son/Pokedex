@@ -46,6 +46,7 @@ final class AppComponent:
   }()
 
   let apiService = APIServiceImpl(session: .shared)
+  let mainQueue: ImmediateSchedulerType = MainScheduler.instance
   lazy var pokemonRepository: PokemonRepository = PokemonRepositoryImpl(
     apiService: apiService,
     baseURL: BaseURL.pokemon

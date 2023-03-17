@@ -14,21 +14,22 @@ import RIBs
 import RxSwift
 import SharedModels
 
+import Foundation
+
 final class DiscoverHomeComponent:
   Component<DiscoverHomeDependency>,
   DiscoverHomeInteractorDependency,
   DiscoverDetailDependency {
   fileprivate var discoverDetailBuilder: DiscoverDetailBuildable { dependency.discoverDetailBuilder }
-  let pokemonRepository: PokemonRepository
+  var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
+  var mainQueue: ImmediateSchedulerType { dependency.mainQueue }
   var pokemons: ReadOnlyBehaviorSubject<[Pokemon]> { dependency.pokemonRepository.pokemons }
   var imageLoader: ImageLoader { dependency.imageLoader }
   var user: ReadOnlyBehaviorSubject<User?> { dependency.user }
 
-  init(
-    dependency: DiscoverHomeDependency,
-    pokemonRepository: PokemonRepository
+  override init(
+    dependency: DiscoverHomeDependency
   ) {
-    self.pokemonRepository = pokemonRepository
     super.init(dependency: dependency)
   }
 }
@@ -44,10 +45,7 @@ public final class DiscoverHomeBuilder: Builder<DiscoverHomeDependency>, Discove
   public func build(
     withListener listener: DiscoverHomeListener
   ) -> ViewableRouting {
-    let component = DiscoverHomeComponent(
-      dependency: dependency,
-      pokemonRepository: dependency.pokemonRepository
-    )
+    let component = DiscoverHomeComponent(dependency: dependency)
     let viewController = DiscoverHomeViewController(imageLoader: dependency.imageLoader)
     let interactor = DiscoverHomeInteractor(
       presenter: viewController,

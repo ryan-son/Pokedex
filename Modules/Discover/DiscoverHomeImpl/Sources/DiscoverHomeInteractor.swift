@@ -25,6 +25,7 @@ protocol DiscoverHomePresentable: Presentable {
 }
 
 protocol DiscoverHomeInteractorDependency {
+  var mainQueue: ImmediateSchedulerType { get }
   var pokemonRepository: PokemonRepository { get }
 }
 
@@ -57,8 +58,8 @@ final class DiscoverHomeInteractor:
     fetchNextPage()
 
     dependency.pokemonRepository.pokemons
-      .asDriver(onErrorJustReturn: [])
-      .drive(onNext: { [weak self] pokemons in
+      .observe(on: dependency.mainQueue)
+      .subscribe(onNext: { [weak self] pokemons in
         self?.presenter.updateViews(with: pokemons)
       })
       .disposeOnDeactivate(interactor: self)

@@ -9,20 +9,20 @@ import DiscoverDetail
 import ImageLoader
 import PokemonRepository
 import PXUtilities
+import RxSwift
 import RIBs
 import SharedModels
 
 public protocol DiscoverHomeDependency: Dependency {
   var discoverDetailBuilder: DiscoverDetailBuildable { get }
+  var mainQueue: ImmediateSchedulerType { get }
   var pokemonRepository: PokemonRepository { get }
   var imageLoader: ImageLoader { get }
   var user: ReadOnlyBehaviorSubject<User?> { get }
 }
 
 public protocol DiscoverHomeBuildable: Buildable {
-  func build(
-    withListener listener: DiscoverHomeListener
-  ) -> ViewableRouting
+  func build(withListener listener: DiscoverHomeListener) -> ViewableRouting
 }
 
 public protocol DiscoverHomeListener: AnyObject {}

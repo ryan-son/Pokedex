@@ -61,7 +61,7 @@ public final class PokemonRepositoryImpl: PokemonRepository {
       .disposed(by: disposeBag)
   }
 
-  public func randomPokemon() -> Pokemon? {
-    return pokemons.value?.randomElement()
+  public func randomPokemon(selectRandom: @escaping (([Pokemon]) -> Pokemon?)) -> Pokemon? {
+    return selectRandom(pokemons.value ?? [])
   }
 }

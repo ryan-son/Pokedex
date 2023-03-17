@@ -23,6 +23,7 @@ protocol AppRootDependency: Dependency {
   var loginBuilder: LoginBuildable { get }
 
   var pokemonRepository: PokemonRepository { get }
+  var mainQueue: ImmediateSchedulerType { get }
   var imageLoader: ImageLoader { get }
   var userSubject: BehaviorSubject<User?> { get }
   var user: ReadOnlyBehaviorSubject<User?> { get }
@@ -39,6 +40,7 @@ final class AppRootComponent:
   var loginBuilder: LoginBuildable { dependency.loginBuilder }
 
   private let rootViewController: ViewControllable
+  var mainQueue: ImmediateSchedulerType { dependency.mainQueue }
   var pokemonRepository: PokemonRepository { dependency.pokemonRepository }
   var imageLoader: ImageLoader { dependency.imageLoader }
 
