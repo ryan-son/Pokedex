@@ -36,7 +36,7 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
 
   func build() -> (launchRouter: LaunchRouting, urlHandler: URLHandler) {
     let tabBarViewController = RootTabBarController()
-    let component = AppRootComponent(
+    let _ = AppRootComponent(
       dependency: dependency,
       rootViewController: tabBarViewController
     )

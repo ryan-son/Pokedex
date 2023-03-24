@@ -3,4 +3,4 @@ disabled_rules:
   - trailing_comma
   - type_name
 
-force_case: warning # for unit test
+force_cast: warning # for unit test

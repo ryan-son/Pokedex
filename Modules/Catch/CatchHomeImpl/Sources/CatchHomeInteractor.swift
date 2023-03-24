@@ -78,7 +78,9 @@ final class CatchHomeInteractor:
   }
 
   private func setRandomPokemon() {
-    guard let randomPokemon = dependency.pokemonRepository.randomPokemon() else { return }
+    guard let randomPokemon = dependency.pokemonRepository.randomPokemon(
+      selectRandom: { $0.randomElement() }
+    ) else { return }
     presenter.updatePokemonCardView(with: randomPokemon)
   }
 
