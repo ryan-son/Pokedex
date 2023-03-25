@@ -9,13 +9,13 @@ import RxSwift
 import RIBs
 import UIKit
 
-public final class ViewControllableMock: UIViewController, ViewControllable {
+open class ViewControllableMock: UIViewController, ViewControllable {
 
   public init() {
     super.init(nibName: nil, bundle: nil)
   }
 
-  required init?(coder: NSCoder) {
+  required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

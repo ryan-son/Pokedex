@@ -8,7 +8,7 @@
 import RxSwift
 import RIBs
 
-public final class RoutingMock: Routing {
+open class RoutingMock: Routing {
 
   public var loadHandler: (() -> Void)?
   public var loadCallCount: Int = 0

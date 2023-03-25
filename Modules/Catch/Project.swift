@@ -22,6 +22,10 @@ let project: Project = .feature(
         .target(name: "CatchHome"),
         .project(target: "RIBsUtil", path: .relativeToRoot("Modules/Platform")),
         .project(target: "PXDesignSystem", path: .relativeToRoot("Modules/PXDesignSystem")),
+      ],
+      unitTestDependencies: [
+        .project(target: "PokemonRepositoryTestSupport", path: .relativeToRoot("Modules/Platform")),
+        .project(target: "RIBsTestSupport", path: .relativeToRoot("Modules/Platform")),
       ]
     ),
   ],
