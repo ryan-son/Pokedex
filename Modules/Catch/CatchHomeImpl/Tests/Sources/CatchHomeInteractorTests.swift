@@ -8,6 +8,7 @@
 @testable import CatchHomeImpl
 import CatchHome
 import PokemonRepositoryTestSupport
+import SharedModels
 import XCTest
 
 final class CatchHomeInteractorTests: XCTestCase {
@@ -51,6 +52,32 @@ final class CatchHomeInteractorTests: XCTestCase {
 
   // MARK: - Tests
 
-  func test_exampleObservable_callsRouterOrListener_exampleProtocol() {
+  func test_activateOnLoggedOut() {
+    // when
+    sut.activate()
+
+    // then
+    XCTAssertEqual(presenter.layoutLoggedOutCallCount, 1)
+  }
+
+  func test_didTapLoginButton() {
+    // when
+    sut.didTapLoginButton()
+
+    // then
+    XCTAssertEqual(router.routeToLoginCallCount, 1)
+  }
+
+  func test_loginDidTapLoginButton() {
+    // given
+    let user = User(name: "Ryan")
+
+    // when
+    sut.loginDidTapLoginButton(with: user)
+
+    // then
+    XCTAssertEqual(listener.loginDidTapLoginButtonCallCount, 1)
+    XCTAssertEqual(listener.loginDidTapLoginButtonUser?.name, user.name)
+    XCTAssertEqual(router.detachLoginCallCount, 1)
   }
 }
