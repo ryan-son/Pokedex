@@ -1,9 +1,11 @@
 @testable import CatchHomeImpl
 import CatchHome
+import Login
 import PokemonRepository
 import PokemonRepositoryTestSupport
 import PXUtilities
 import RxSwift
+import RIBs
 import RIBsTestSupport
 import SharedModels
 import UIKit
@@ -65,3 +67,34 @@ final class CatchHomeRoutingMock: ViewableRoutingMock, CatchHomeRouting {
 }
 
 final class CatchHomeViewControllableMock: ViewControllableMock, CatchHomeViewControllable {}
+
+final class CatchHomeInteractableMock: InteractableMock, CatchHomeInteractable {
+
+  var router: CatchHomeRouting?
+  var listener: CatchHomeListener?
+
+  var loginDidTapLoginButtonCallCount = 0
+  var loginDidTapLoginButtonUser: User?
+  func loginDidTapLoginButton(with user: User) {
+    loginDidTapLoginButtonCallCount += 1
+    loginDidTapLoginButtonUser = user
+  }
+}
+
+final class LoginRoutingMock: ViewableRoutingMock {}
+
+final class LoginBuildableMock: LoginBuildable {
+
+  var buildHandler: ((_ listener: LoginListener) -> ViewableRouting)?
+
+  var buildCallCount = 0
+  func build(withListener listener: LoginListener) -> ViewableRouting {
+    buildCallCount += 1
+
+    if let buildHandler {
+      return buildHandler(listener)
+    }
+
+    fatalError()
+  }
+}
